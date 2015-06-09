@@ -36,7 +36,7 @@ public:
 class CubeCenter
 {
 public:
-    static CubeCenter* getInstance(){
+    static CubeCenter* get(){
         return &_instance;
     }
     CubePack cubePack;

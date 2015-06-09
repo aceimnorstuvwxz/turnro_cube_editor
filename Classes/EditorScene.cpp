@@ -8,6 +8,7 @@
 
 #include "EditorScene.h"
 #include "McdLayer.h"
+#include "cubedef.h"
 
 USING_NS_CC;
 #define PI 3.1415926f
@@ -18,7 +19,7 @@ public:
     virtual bool init() override{
         if (!McdLayer::init()) return false;
 
-        decorateButton(_btnInfo, BTN_A);
+//        decorateButton(_btnInfo, BTN_A);
         return true;
     };
 
@@ -48,15 +49,27 @@ bool EditorScene::init()
     auto bg = BillBoard::create("images/logo_only.png");
     bg->setPosition3D({0,0,0});
     _3dLayer->addChild(bg);
+    bg->setScale(0.5f);
 
     auto sp3d = Sprite3D::create("3d/jingbix.c3b");
     sp3d->setPosition3D({0, 0, 10});
     _3dLayer->addChild(sp3d);
     sp3d->setScale(4.f);
 
+    // cubepack
+    CubeCenter::get()->initWithTest();
+    for (int i = 0; i < CubeCenter::get()->cubePack.cubes.size(); i++) {
+        Cube cube =CubeCenter::get()->cubePack.cubes[i];
+        auto sp3d = Sprite3D::create("3d/jingbix.c3b");
+        float length_scale = 10.f;
+        sp3d->setPosition3D(Vec3{static_cast<float>(cube.x), static_cast<float>(cube.y), static_cast<float>(cube.z)}*length_scale);
+        sp3d->setScale(4.f);
+        _3dLayer->addChild(sp3d);
+    }
+
     // camera
     _camera = Camera::createPerspective(60, size.width/size.height, 1, 1000);
-    _camera->setPosition3D({0, 0, 50});
+    _camera->setPosition3D({0, 0, 200});
     _camera->lookAt({0,0,0});
     _camera->setCameraFlag(CameraFlag::USER1);
     _3dLayer->addChild(_camera);
