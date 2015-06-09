@@ -96,25 +96,37 @@ bool EditorScene::init()
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
                 CCLOG("key W down");
-                _W = true;
+                _up = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
                 CCLOG("key S down");
-                _S = true;
+                _down = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_A:
             case EventKeyboard::KeyCode::KEY_CAPITAL_A:
                 CCLOG("key A down");
-                _A = true;
+                _left = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_D:
             case EventKeyboard::KeyCode::KEY_CAPITAL_D:
                 CCLOG("key D down");
-                _D = true;
+                _right = true;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_Q:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_Q:
+                CCLOG("key Q down");
+                _zoomOut = true;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_E:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_E:
+                CCLOG("key E down");
+                _zoomIn = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -144,25 +156,36 @@ bool EditorScene::init()
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
                 CCLOG("key W up");
-                _W = false;
+                _up = false;
                 break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
                 CCLOG("key S up");
-                _S = false;
+                _down = false;
                 break;
 
             case EventKeyboard::KeyCode::KEY_A:
             case EventKeyboard::KeyCode::KEY_CAPITAL_A:
                 CCLOG("key A up");
-                _A = false;
+                _left = false;
                 break;
 
             case EventKeyboard::KeyCode::KEY_D:
             case EventKeyboard::KeyCode::KEY_CAPITAL_D:
                 CCLOG("key D up");
-                _D = false;
+                _right = false;
+                break;
+            case EventKeyboard::KeyCode::KEY_Q:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_Q:
+                CCLOG("key Q up");
+                _zoomOut = false;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_E:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_E:
+                CCLOG("key E up");
+                _zoomIn = false;
                 break;
 
 //            case EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -233,7 +256,14 @@ bool EditorScene::init()
                 break;
         }
     };
-    _mouseListener->onMouseScroll = [=](Event *event){};
+    _mouseListener->onMouseScroll = [&](Event *event){
+        EventMouse* e = (EventMouse*)event;
+        CCLOG("%f, %f", e->getScrollX(), e->getScrollY());
+        float diff = e->getScrollY();
+        Vec3 dir = _camera->getRotationQuat() * Vec3{0.f, 0.f, -1.f};
+        dir.normalize();
+        _camera->setPosition3D(_camera->getPosition3D() + SCALL_MOVE_SCALE * -diff * dir);
+    };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
 
     scheduleUpdate();
@@ -250,23 +280,33 @@ void EditorScene::update(float dt)
     _camera->setRotationQuat(qua);
 
     qua.normalize();
-    if (_W && !_S) {
+    if (_up && !_down) {
         Vec3 dir = qua * Vec3{0.f,1.f,0.f};
         dir.normalize();
         _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
     }
-    if (_S && !_W) {
+    if (_down && !_up) {
         Vec3 dir = qua * Vec3{0.f,-1.f,0.f};
         dir.normalize();
         _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
     }
-    if (_A && !_D) {
+    if (_left && !_right) {
         Vec3 dir = qua * Vec3{-1.f,0.f,0.f};
         dir.normalize();
         _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
     }
-    if (_D && !_A) {
+    if (_right && !_left) {
         Vec3 dir = qua * Vec3{1.f,0.f,0.f};
+        dir.normalize();
+        _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
+    }
+    if (_zoomIn && !_zoomOut) {
+        Vec3 dir = qua * Vec3{0.f,0.f,-1.f};
+        dir.normalize();
+        _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
+    }
+    if (_zoomOut && !_zoomIn) {
+        Vec3 dir = qua * Vec3{0.f,0.f,1.f};
         dir.normalize();
         _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
     }
