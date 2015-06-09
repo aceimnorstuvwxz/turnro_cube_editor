@@ -17,6 +17,7 @@ class EditorScene : public cocos2d::Scene
 public:
     virtual bool init();
     CREATE_FUNC(EditorScene);
+    const float MOVE_SCALE = 5.f;
 
 private:
 
@@ -42,6 +43,8 @@ private:
     void left();
     void down();
     void right();
+    void w();
+    void s();
 };
 
 #endif /* defined(__cube3d__EditorScene__) */

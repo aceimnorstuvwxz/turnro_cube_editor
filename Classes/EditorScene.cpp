@@ -102,12 +102,14 @@ bool EditorScene::init()
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
                 CCLOG("key W");
+                w();
                 //todo
                 break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
                 CCLOG("key s");
+                s();
                 //todo
                 break;
 
@@ -232,4 +234,21 @@ void EditorScene::right()
 void EditorScene::left()
 {
     _rotateY +=PI * 1.f/30.f;
+}
+void EditorScene::w()
+{
+    auto qua = _camera->getRotationQuat();
+    qua.normalize();
+    Vec3 dir_forward = qua * Vec3{0.f,0.f,-1.f};
+    dir_forward.normalize();
+    _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir_forward);
+}
+
+void EditorScene::s()
+{
+    auto qua = _camera->getRotationQuat();
+    qua.normalize();
+    Vec3 dir_forward = qua * Vec3{0.f,0.f,1.f};
+    dir_forward.normalize();
+    _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir_forward);
 }
