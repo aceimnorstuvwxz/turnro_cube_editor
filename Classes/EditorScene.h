@@ -17,7 +17,9 @@ class EditorScene : public cocos2d::Scene
 public:
     virtual bool init();
     CREATE_FUNC(EditorScene);
-    const float MOVE_SCALE = 5.f;
+    const float MOVE_SCALE = 1.f;
+    const float UP_DOWN_MAX = 0.99f;
+    const float ROTATE_SCALE = 0.01f;
 
 private:
 
@@ -38,13 +40,16 @@ private:
         _stateLabel->setString(str.str());
     }
 
+    bool _W = false;
+    bool _S = false;
+    bool _A = false;
+    bool _D = false;
+
     virtual void update(float dt) override;
     void up();
     void left();
     void down();
     void right();
-    void w();
-    void s();
 };
 
 #endif /* defined(__cube3d__EditorScene__) */

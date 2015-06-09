@@ -88,12 +88,6 @@ bool EditorScene::init()
     _keyboardListener = EventListenerKeyboard::create();
     _keyboardListener->onKeyPressed = [&](EventKeyboard::KeyCode code, Event* event){
         switch (code) {
-            case EventKeyboard::KeyCode::KEY_C:
-            case EventKeyboard::KeyCode::KEY_CAPITAL_C:
-                _isFPS = !_isFPS;
-                CCLOG("key C, switch _isFPS");
-                break;
-
             case EventKeyboard::KeyCode::KEY_SPACE:
                 CCLOG("key space, shot");
                 //TODO
@@ -101,28 +95,26 @@ bool EditorScene::init()
 
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
-                CCLOG("key W");
-                w();
-                //todo
+                CCLOG("key W down");
+                _W = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
-                CCLOG("key s");
-                s();
-                //todo
+                CCLOG("key S down");
+                _S = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_A:
             case EventKeyboard::KeyCode::KEY_CAPITAL_A:
-                CCLOG("key a");
-                //todo
+                CCLOG("key A down");
+                _A = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_D:
             case EventKeyboard::KeyCode::KEY_CAPITAL_D:
-                CCLOG("key d");
-                //todo
+                CCLOG("key D down");
+                _D = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -143,6 +135,52 @@ bool EditorScene::init()
         }
     };
     _keyboardListener->onKeyReleased = [&](EventKeyboard::KeyCode code, Event* event){
+        switch (code) {
+            case EventKeyboard::KeyCode::KEY_SPACE:
+                CCLOG("key space, shot");
+                //TODO
+                break;
+
+            case EventKeyboard::KeyCode::KEY_W:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_W:
+                CCLOG("key W up");
+                _W = false;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_S:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_S:
+                CCLOG("key S up");
+                _S = false;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_A:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_A:
+                CCLOG("key A up");
+                _A = false;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_D:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_D:
+                CCLOG("key D up");
+                _D = false;
+                break;
+
+//            case EventKeyboard::KeyCode::KEY_UP_ARROW:
+//                up();
+//                break;
+//            case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+//                down();
+//                break;
+//            case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+//                left();
+//                break;
+//            case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+//                right();
+//                break;
+
+            default:
+                break;
+        }
 
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_keyboardListener, this);
@@ -157,16 +195,11 @@ bool EditorScene::init()
         auto now = e->getLocation();
         Vec2 diff = now - _fpsAnchor;
         _fpsAnchor = now;
-        _rotateY -= 0.02f*diff.x;
-        _rotateX -= 0.02f*diff.y;
-        if (_rotateX > 0.95f*0.5f*PI) _rotateX = 0.95f*0.5f*PI;
-        if (_rotateX < -0.95f*0.5f*PI) _rotateX = -0.95f*0.5f*PI;
-        CCLOG("%f, %f, %f, %f", diff.x, diff.y, _rotateX, _rotateY);
+        _rotateY -= ROTATE_SCALE*diff.x;
+        _rotateX -= ROTATE_SCALE*diff.y;
+        if (_rotateX > UP_DOWN_MAX*0.5f*PI) _rotateX = UP_DOWN_MAX*0.5f*PI;
+        if (_rotateX < -UP_DOWN_MAX*0.5f*PI) _rotateX = -UP_DOWN_MAX*0.5f*PI;
 
-        Quaternion qua = {Vec3(1.f,0.f,0.f), _rotateX};
-        Quaternion quaRes = {Vec3(0.f, 1.f, 0.f), _rotateY};
-        quaRes.multiply(qua);
-        _camera->setRotationQuat(quaRes);
     };
     _mouseListener->onMouseUp = [&](Event *event){
         EventMouse* e = (EventMouse*)event;
@@ -211,10 +244,32 @@ bool EditorScene::init()
 void EditorScene::update(float dt)
 {
     _updateStateLabel();
-    Quaternion qua = {Vec3(1.f,0.f,0.f), _rotateX};
-    Quaternion quaRes = {Vec3(0.f, 1.f, 0.f), _rotateY};
-    quaRes.multiply(qua);
-    _camera->setRotationQuat(quaRes);
+    Quaternion qua2 = {Vec3(1.f,0.f,0.f), _rotateX};
+    Quaternion qua = {Vec3(0.f, 1.f, 0.f), _rotateY};
+    qua.multiply(qua2);
+    _camera->setRotationQuat(qua);
+
+    qua.normalize();
+    if (_W && !_S) {
+        Vec3 dir = qua * Vec3{0.f,1.f,0.f};
+        dir.normalize();
+        _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
+    }
+    if (_S && !_W) {
+        Vec3 dir = qua * Vec3{0.f,-1.f,0.f};
+        dir.normalize();
+        _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
+    }
+    if (_A && !_D) {
+        Vec3 dir = qua * Vec3{-1.f,0.f,0.f};
+        dir.normalize();
+        _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
+    }
+    if (_D && !_A) {
+        Vec3 dir = qua * Vec3{1.f,0.f,0.f};
+        dir.normalize();
+        _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir);
+    }
 }
 
 void EditorScene::up()
@@ -234,21 +289,4 @@ void EditorScene::right()
 void EditorScene::left()
 {
     _rotateY +=PI * 1.f/30.f;
-}
-void EditorScene::w()
-{
-    auto qua = _camera->getRotationQuat();
-    qua.normalize();
-    Vec3 dir_forward = qua * Vec3{0.f,0.f,-1.f};
-    dir_forward.normalize();
-    _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir_forward);
-}
-
-void EditorScene::s()
-{
-    auto qua = _camera->getRotationQuat();
-    qua.normalize();
-    Vec3 dir_forward = qua * Vec3{0.f,0.f,1.f};
-    dir_forward.normalize();
-    _camera->setPosition3D(_camera->getPosition3D() + MOVE_SCALE * dir_forward);
 }
