@@ -16,8 +16,6 @@
 		3EACC99019EE6D4300EB3C5E /* res in Resources */ = {isa = PBXBuildFile; fileRef = 3EACC98E19EE6D4300EB3C5E /* res */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
-		46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */; };
-		46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		503AE10017EB989F00D1A890 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FB17EB989F00D1A890 /* AppController.mm */; };
 		503AE10117EB989F00D1A890 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FC17EB989F00D1A890 /* main.m */; };
@@ -54,6 +52,8 @@
 		521A8EAA19F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
+		B504B25A1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */; };
+		B504B25B1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */; };
 		B50615851B26C1D900FBAD9F /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50615831B26C1D900FBAD9F /* Common.cpp */; };
 		B50615861B26C1F000FBAD9F /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50615831B26C1D900FBAD9F /* Common.cpp */; };
 		B506158D1B26C6E000FBAD9F /* McdLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B506158B1B26C6E000FBAD9F /* McdLayer.cpp */; };
@@ -120,8 +120,6 @@
 		3EACC98E19EE6D4300EB3C5E /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorldScene.cpp; sourceTree = "<group>"; };
-		46880B8719C43A87006E1F66 /* HelloWorldScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloWorldScene.h; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE0FA17EB989F00D1A890 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppController.h; path = ios/AppController.h; sourceTree = SOURCE_ROOT; };
@@ -159,6 +157,8 @@
 		521A8EA819F11F5000D177D7 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CubeSprite.cpp; sourceTree = "<group>"; };
+		B504B2591B28546B00DA6EE1 /* CubeSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CubeSprite.h; sourceTree = "<group>"; };
 		B50615831B26C1D900FBAD9F /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
 		B50615841B26C1D900FBAD9F /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		B506158B1B26C6E000FBAD9F /* McdLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = McdLayer.cpp; sourceTree = "<group>"; };
@@ -315,14 +315,14 @@
 				B506158C1B26C6E000FBAD9F /* McdLayer.h */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
-				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
-				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
 				B50615831B26C1D900FBAD9F /* Common.cpp */,
 				B50615841B26C1D900FBAD9F /* Common.h */,
 				B50615991B26CD3F00FBAD9F /* EditorScene.cpp */,
 				B506159A1B26CD3F00FBAD9F /* EditorScene.h */,
 				B50615A21B27504500FBAD9F /* cubedef.cpp */,
 				B50615A31B27504500FBAD9F /* cubedef.h */,
+				B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */,
+				B504B2591B28546B00DA6EE1 /* CubeSprite.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -522,12 +522,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
-				46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				B50615851B26C1D900FBAD9F /* Common.cpp in Sources */,
 				B506159B1B26CD3F00FBAD9F /* EditorScene.cpp in Sources */,
 				B50615A41B27504500FBAD9F /* cubedef.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				B504B25A1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */,
 				B50615971B26CA1500FBAD9F /* LogoScene.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				B506158D1B26C6E000FBAD9F /* McdLayer.cpp in Sources */,
@@ -538,6 +538,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B504B25B1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */,
 				B50615861B26C1F000FBAD9F /* Common.cpp in Sources */,
 				B50615981B26CA1500FBAD9F /* LogoScene.cpp in Sources */,
 				B50615A51B27504500FBAD9F /* cubedef.cpp in Sources */,
@@ -545,7 +546,6 @@
 				B506159C1B26CD3F00FBAD9F /* EditorScene.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				B506158E1B26C6E000FBAD9F /* McdLayer.cpp in Sources */,
-				46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

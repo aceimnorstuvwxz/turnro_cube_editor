@@ -9,6 +9,7 @@
 #include "EditorScene.h"
 #include "McdLayer.h"
 #include "cubedef.h"
+#include "CubeSprite.h"
 
 USING_NS_CC;
 #define PI 3.1415926f
@@ -67,6 +68,12 @@ bool EditorScene::init()
         _3dLayer->addChild(sp3d);
     }
 
+    // cube sprite
+    auto cubeSprite = CubeSprite::create(Vec3(0,0,0), Color4B::WHITE);
+    cubeSprite->setPosition3D({0,0,20});
+    cubeSprite->setScale(2.f);
+    _3dLayer->addChild(cubeSprite);
+    
     // camera
     _camera = Camera::createPerspective(60, size.width/size.height, 1, 1000);
     _camera->setPosition3D({0, 0, 200});
