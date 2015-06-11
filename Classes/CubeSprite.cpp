@@ -116,26 +116,22 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
 
 void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)
 {
-    //TODO use dirty flag to reuse MeshCommand
     CC_SAFE_DELETE(_meshCommand);
-//    CCLOG(">>>>>VBO %d", _renderMesh->getVertexBuffer());
-
     _meshCommand = new MeshCommand();
-        _meshCommand->genMaterialID(0, getGLProgramState(), _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), _blendFunc);
-    _meshCommand->init(_globalZOrder, 0, getGLProgramState(), _blendFunc, _renderMesh->getVertexBuffer(),_renderMesh->getIndexBuffer(),(GLenum)_renderMesh->getPrimitiveType(), (GLenum)_renderMesh->getIndexFormat(), _renderMesh->getIndexCount(), transform);
+    _meshCommand->genMaterialID(0, getGLProgramState(), _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), _blendFunc);
+    _meshCommand->init(_globalZOrder, 0, getGLProgramState(), _blendFunc, _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), (GLenum)_renderMesh->getPrimitiveType(), (GLenum)_renderMesh->getIndexFormat(), _renderMesh->getIndexCount(), transform, flags);
     _meshCommand->setCullFaceEnabled(false);
     _meshCommand->setDepthTestEnabled(false);
     Color4F color(getDisplayedColor());
     color.a = getDisplayedOpacity() / 255.0f;
     _meshCommand->setDisplayColor(Vec4(color.r, color.g, color.b, color.a));
-    Director::getInstance()->getRenderer()->addCommand(_meshCommand);
-//    CCLOG(">>>>>VBO %d", _renderMesh->getVertexBuffer());
+    renderer->addCommand(_meshCommand);
     Node::draw(renderer, transform, flags);
 }
 
 void CubeSprite::update(float dt){
     if (_renderMesh){
-        CCLOG("%x", _renderMesh);
+//        CCLOG("%x", _renderMesh);
 //        CCLOG("up>>>>>VBO %d", _renderMesh->getVertexBuffer());
 //        CCLOG("ref = %d", _renderMesh->getReferenceCount());
     }

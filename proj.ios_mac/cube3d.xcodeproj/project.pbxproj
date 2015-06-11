@@ -54,6 +54,8 @@
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		B504B25A1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */; };
 		B504B25B1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */; };
+		B504B2E91B29A31200DA6EE1 /* BoxSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B504B2E71B29A31200DA6EE1 /* BoxSprite.cpp */; };
+		B504B2EA1B29A31200DA6EE1 /* BoxSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B504B2E71B29A31200DA6EE1 /* BoxSprite.cpp */; };
 		B50615851B26C1D900FBAD9F /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50615831B26C1D900FBAD9F /* Common.cpp */; };
 		B50615861B26C1F000FBAD9F /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50615831B26C1D900FBAD9F /* Common.cpp */; };
 		B506158D1B26C6E000FBAD9F /* McdLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B506158B1B26C6E000FBAD9F /* McdLayer.cpp */; };
@@ -159,6 +161,8 @@
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CubeSprite.cpp; sourceTree = "<group>"; };
 		B504B2591B28546B00DA6EE1 /* CubeSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CubeSprite.h; sourceTree = "<group>"; };
+		B504B2E71B29A31200DA6EE1 /* BoxSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoxSprite.cpp; sourceTree = "<group>"; };
+		B504B2E81B29A31200DA6EE1 /* BoxSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxSprite.h; sourceTree = "<group>"; };
 		B50615831B26C1D900FBAD9F /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Common.cpp; sourceTree = "<group>"; };
 		B50615841B26C1D900FBAD9F /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		B506158B1B26C6E000FBAD9F /* McdLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = McdLayer.cpp; sourceTree = "<group>"; };
@@ -323,6 +327,8 @@
 				B50615A31B27504500FBAD9F /* cubedef.h */,
 				B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */,
 				B504B2591B28546B00DA6EE1 /* CubeSprite.h */,
+				B504B2E71B29A31200DA6EE1 /* BoxSprite.cpp */,
+				B504B2E81B29A31200DA6EE1 /* BoxSprite.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -525,6 +531,7 @@
 				B50615851B26C1D900FBAD9F /* Common.cpp in Sources */,
 				B506159B1B26CD3F00FBAD9F /* EditorScene.cpp in Sources */,
 				B50615A41B27504500FBAD9F /* cubedef.cpp in Sources */,
+				B504B2E91B29A31200DA6EE1 /* BoxSprite.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				B504B25A1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */,
@@ -539,6 +546,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B504B25B1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */,
+				B504B2EA1B29A31200DA6EE1 /* BoxSprite.cpp in Sources */,
 				B50615861B26C1F000FBAD9F /* Common.cpp in Sources */,
 				B50615981B26CA1500FBAD9F /* LogoScene.cpp in Sources */,
 				B50615A51B27504500FBAD9F /* cubedef.cpp in Sources */,
