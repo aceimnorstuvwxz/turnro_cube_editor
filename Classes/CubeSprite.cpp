@@ -1,10 +1,12 @@
-//
+
 //  CubeSprite.cpp
 //  cube3d
 //
 //  Created by chenbingfeng on 15/6/10.
 //
 //
+// 这样子有个问题就是VBO奔溃。
+// 从Sprite3D入手，看人家是怎么写得。
 
 #include "CubeSprite.h"
 
@@ -35,11 +37,12 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
     auto fragSource = fileUtils->getStringFromFile("3d/cube.fsh");
 
     auto glprogram = GLProgram::createWithByteArrays(vertSource.c_str(), fragSource.c_str());
-    glprogram->addAttribute("a_position", GLProgram::VERTEX_ATTRIB_POSITION);
+    glprogram->bindAttribLocation("a_position", GLProgram::VERTEX_ATTRIB_POSITION);
     glprogram->link();
     glprogram->updateUniforms();
 
     _programState = GLProgramState::getOrCreateWithGLProgram(glprogram);
+    _programState->retain();
     this->setGLProgramState(_programState);
 
     // create the mesh
@@ -92,9 +95,10 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
     _renderMesh = Mesh::create(positions, normals, texs, triangleIndex);
     _renderMesh->retain();
 
+
     long offset = 0;
     auto attributeCount = _renderMesh->getMeshVertexAttribCount();
-    CCLOG("attributeCount = %d", attributeCount);
+    CCLOG("attributeCount = %ld", attributeCount);
     for (auto k = 0; k < attributeCount; k++) {
         auto meshattribute = _renderMesh->getMeshVertexAttribute(k);
         _programState->setVertexAttribPointer(s_attributeNames[meshattribute.vertexAttrib],
@@ -113,25 +117,26 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
 void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)
 {
     //TODO use dirty flag to reuse MeshCommand
+    CC_SAFE_DELETE(_meshCommand);
+//    CCLOG(">>>>>VBO %d", _renderMesh->getVertexBuffer());
 
-//    CC_SAFE_DELETE(_meshCommand);
-    CCLOG(">>>>>VBO %d", _renderMesh->getVertexBuffer());
-    if (_meshCommand == nullptr){
     _meshCommand = new MeshCommand();
+        _meshCommand->genMaterialID(0, getGLProgramState(), _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), _blendFunc);
     _meshCommand->init(_globalZOrder, 0, getGLProgramState(), _blendFunc, _renderMesh->getVertexBuffer(),_renderMesh->getIndexBuffer(),(GLenum)_renderMesh->getPrimitiveType(), (GLenum)_renderMesh->getIndexFormat(), _renderMesh->getIndexCount(), transform);
     _meshCommand->setCullFaceEnabled(false);
     _meshCommand->setDepthTestEnabled(false);
     Color4F color(getDisplayedColor());
     color.a = getDisplayedOpacity() / 255.0f;
     _meshCommand->setDisplayColor(Vec4(color.r, color.g, color.b, color.a));
-    }
     Director::getInstance()->getRenderer()->addCommand(_meshCommand);
-    CCLOG(">>>>>VBO %d", _renderMesh->getVertexBuffer());
+//    CCLOG(">>>>>VBO %d", _renderMesh->getVertexBuffer());
     Node::draw(renderer, transform, flags);
 }
 
 void CubeSprite::update(float dt){
     if (_renderMesh){
-        CCLOG("up>>>>>VBO %d", _renderMesh->getVertexBuffer());
+        CCLOG("%x", _renderMesh);
+//        CCLOG("up>>>>>VBO %d", _renderMesh->getVertexBuffer());
+//        CCLOG("ref = %d", _renderMesh->getReferenceCount());
     }
 }

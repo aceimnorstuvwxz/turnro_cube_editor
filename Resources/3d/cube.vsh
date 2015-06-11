@@ -33,7 +33,7 @@ attribute vec4 a_position;
 //
 //	return uv;
 //}
-
+uniform vec4 u_color;
 
 void main()
 {

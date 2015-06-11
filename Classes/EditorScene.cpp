@@ -49,31 +49,31 @@ bool EditorScene::init()
     this->addChild(_3dLayer, 1);
     auto bg = BillBoard::create("images/logo_only.png");
     bg->setPosition3D({0,0,0});
-    _3dLayer->addChild(bg);
+//    _3dLayer->addChild(bg);
     bg->setScale(0.5f);
 
-    auto sp3d = Sprite3D::create("3d/jingbix.c3b");
-    sp3d->setPosition3D({0, 0, 10});
-    _3dLayer->addChild(sp3d);
-    sp3d->setScale(4.f);
+//    auto sp3d = Sprite3D::create("3d/jingbix.c3b");
+//    sp3d->setPosition3D({0, 0, 10});
+//    _3dLayer->addChild(sp3d);
+//    sp3d->setScale(4.f);
 
     // cubepack
-    CubeCenter::get()->initWithTest();
-    for (int i = 0; i < CubeCenter::get()->cubePack.cubes.size(); i++) {
-        Cube cube =CubeCenter::get()->cubePack.cubes[i];
-        auto sp3d = Sprite3D::create("3d/jingbix.c3b");
-        float length_scale = 10.f;
-        sp3d->setPosition3D(Vec3{static_cast<float>(cube.x), static_cast<float>(cube.y), static_cast<float>(cube.z)}*length_scale);
-        sp3d->setScale(4.f);
-        _3dLayer->addChild(sp3d);
-    }
+//    CubeCenter::get()->initWithTest();
+//    for (int i = 0; i < CubeCenter::get()->cubePack.cubes.size(); i++) {
+//        Cube cube =CubeCenter::get()->cubePack.cubes[i];
+//        auto sp3d = Sprite3D::create("3d/jingbix.c3b");
+//        float length_scale = 10.f;
+//        sp3d->setPosition3D(Vec3{static_cast<float>(cube.x), static_cast<float>(cube.y), static_cast<float>(cube.z)}*length_scale);
+//        sp3d->setScale(4.f);
+//        _3dLayer->addChild(sp3d);
+//    }
 
     // cube sprite
-    auto cubeSprite = CubeSprite::create(Vec3(0,0,0), Color4B::WHITE);
-    cubeSprite->setPosition3D({0,0,20});
-    cubeSprite->setScale(2.f);
-    _3dLayer->addChild(cubeSprite);
-    
+//    auto cubeSprite = CubeSprite::create(Vec3(0,0,0), Color4B::WHITE);
+//    cubeSprite->setPosition3D({0,0,20});
+//    cubeSprite->setScale(2.f);
+//    _3dLayer->addChild(cubeSprite);
+
     // camera
     _camera = Camera::createPerspective(60, size.width/size.height, 1, 1000);
     _camera->setPosition3D({0, 0, 200});
@@ -213,7 +213,7 @@ bool EditorScene::init()
         }
 
     };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(_keyboardListener, this);
+//    _eventDispatcher->addEventListenerWithSceneGraphPriority(_keyboardListener, this);
 
     // mouse
     _mouseListener = EventListenerMouse::create();
@@ -271,7 +271,7 @@ bool EditorScene::init()
         dir.normalize();
         _camera->setPosition3D(_camera->getPosition3D() + SCALL_MOVE_SCALE * -diff * dir);
     };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
+//    _eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
 
     scheduleUpdate();
     return true;
