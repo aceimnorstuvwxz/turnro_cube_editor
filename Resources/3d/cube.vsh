@@ -4,14 +4,14 @@ precision mediump float;
 
 // Inputs
 attribute vec4 a_position;
-//attribute vec2 a_texCoord;
+attribute vec2 a_texCoord;
 
 // Varyings
 //varying vec2 v_texCoord;
 #ifdef GL_ES
-//varying mediump vec2 v_texCoord;
+varying mediump vec2 v_texCoord;
 #else
-//varying vec2 v_texCoord;
+varying vec2 v_texCoord;
 #endif
 
 //uniform	float radius ;
@@ -38,5 +38,5 @@ uniform vec4 u_color;
 void main()
 {
     gl_Position = CC_MVPMatrix * a_position;
-//    v_texCoord = vortex( a_texCoord );
+    v_texCoord = a_texCoord;
 }

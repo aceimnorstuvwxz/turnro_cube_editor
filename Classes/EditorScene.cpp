@@ -49,20 +49,20 @@ bool EditorScene::init()
     this->addChild(_3dLayer, 1);
     auto bg = BillBoard::create("images/logo_only.png");
     bg->setPosition3D({0,0,0});
-    _3dLayer->addChild(bg);
+//    _3dLayer->addChild(bg);
     bg->setScale(0.5f);
 
 
-//    // cubepack
-//    CubeCenter::get()->initWithTest();
-//    for (int i = 0; i < CubeCenter::get()->cubePack.cubes.size(); i++) {
-//        Cube cube =CubeCenter::get()->cubePack.cubes[i];
-//        auto sp3d = Sprite3D::create("3d/jingbix.c3b");
-//        float length_scale = 10.f;
-//        sp3d->setPosition3D(Vec3{static_cast<float>(cube.x), static_cast<float>(cube.y), static_cast<float>(cube.z)}*length_scale);
-//        sp3d->setScale(4.f);
-//        _3dLayer->addChild(sp3d);
-//    }
+    // cubepack
+    CubeCenter::get()->initWithTest();
+    for (int i = 0; i < CubeCenter::get()->cubePack.cubes.size(); i++) {
+        Cube cube =CubeCenter::get()->cubePack.cubes[i];
+        auto sp3d = Sprite3D::create("3d/jingbix.c3b");
+        float length_scale = 10.f;
+        sp3d->setPosition3D(Vec3{static_cast<float>(cube.x), static_cast<float>(cube.y), static_cast<float>(cube.z)}*length_scale);
+        sp3d->setScale(4.f);
+        _3dLayer->addChild(sp3d);
+    }
 
     // cube sprite
     auto cubeSprite = CubeSprite::create(Vec3(0,0,0), Color4B::WHITE);
@@ -99,13 +99,13 @@ bool EditorScene::init()
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
                 CCLOG("key W down");
-                _up = true;
+                _zoomIn = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
                 CCLOG("key S down");
-                _down = true;
+                _zoomOut = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_A:
@@ -123,13 +123,13 @@ bool EditorScene::init()
             case EventKeyboard::KeyCode::KEY_Q:
             case EventKeyboard::KeyCode::KEY_CAPITAL_Q:
                 CCLOG("key Q down");
-                _zoomOut = true;
+                _up = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_E:
             case EventKeyboard::KeyCode::KEY_CAPITAL_E:
                 CCLOG("key E down");
-                _zoomIn = true;
+                _down = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -159,13 +159,13 @@ bool EditorScene::init()
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
                 CCLOG("key W up");
-                _up = false;
+                _zoomIn = false;
                 break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
                 CCLOG("key S up");
-                _down = false;
+                _zoomOut = false;
                 break;
 
             case EventKeyboard::KeyCode::KEY_A:
@@ -182,13 +182,13 @@ bool EditorScene::init()
             case EventKeyboard::KeyCode::KEY_Q:
             case EventKeyboard::KeyCode::KEY_CAPITAL_Q:
                 CCLOG("key Q up");
-                _zoomOut = false;
+                _up = false;
                 break;
 
             case EventKeyboard::KeyCode::KEY_E:
             case EventKeyboard::KeyCode::KEY_CAPITAL_E:
                 CCLOG("key E up");
-                _zoomIn = false;
+                _down = false;
                 break;
 
 //            case EventKeyboard::KeyCode::KEY_UP_ARROW:

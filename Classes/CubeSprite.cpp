@@ -55,22 +55,44 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
 
     // 8 vertex
     float half = _cubeLength * 0.5f;
-    positions.push_back(half);
-    positions.push_back(half);
-    positions.push_back(half);
-    auto tfunc = [&positions, &half](int x, int y, int z){
-        positions.push_back(x == 0 ? -half : half);
-        positions.push_back(y == 0 ? -half : half);
-        positions.push_back(z == 0 ? -half : half);
+    auto tfunc = [&positions, &texs, &half](int x, int y, int z){
+        positions.push_back(x == -1 ? -half :
+                            x == 0 ? 0 : half);
+        positions.push_back(y == -1 ? -half :
+                            y == 0 ? 0 : half);
+        positions.push_back(z == -1 ? -half :
+                            z == 0 ? 0 : half);
+
+        if (x * y * z == 0) {
+            texs.push_back(0.f);
+            texs.push_back(0.f);
+        } else {
+            texs.push_back(1.f);
+            texs.push_back(1.f);
+        }
     };
     tfunc(1,1,1);
-    tfunc(0,1,1);
+    tfunc(-1,1,1);
+    tfunc(-1,-1,1);
+    tfunc(1,-1,1);
+    tfunc(1,1,-1);
+    tfunc(-1,1,-1);
+    tfunc(-1,-1,-1);
+    tfunc(1,-1,-1);
     tfunc(0,0,1);
-    tfunc(1,0,1);
-    tfunc(1,1,0);
-    tfunc(0,1,0);
-    tfunc(0,0,0);
     tfunc(1,0,0);
+    tfunc(0,0,-1);
+    tfunc(-1,0,0);
+    tfunc(0,1,0);
+    tfunc(0,-1,0);
+//    auto ff = [&positions](float a, float b, float c){
+//        positions.push_back(a);
+//        positions.push_back(b);
+//        positions.push_back(c);
+//    };
+//    ff(-half, half, half);
+//    ff(-half, -half, half);
+//    ff(half, half, half);
 
     // 12 triangles
     std::vector<unsigned short> triangleIndex;
@@ -79,18 +101,43 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
         triangleIndex.push_back(b);
         triangleIndex.push_back(c);
     };
-    tgf(0,1,2);
-    tgf(2,3,0);
-    tgf(4,0,3);
-    tgf(3,7,4);
-    tgf(4,7,5);
-    tgf(5,7,6);
-    tgf(5,6,1);
-    tgf(6,2,1);
-    tgf(5,1,4);
-    tgf(1,0,4);
-    tgf(2,6,3);
-    tgf(6,7,3);
+//    tgf(0,1,2);
+//    tgf(2,3,0);
+//    tgf(4,0,3);
+//    tgf(3,7,4);
+//    tgf(4,7,5);
+//    tgf(5,7,6);
+//    tgf(5,6,1);
+//    tgf(6,2,1);
+//    tgf(5,1,4);
+//    tgf(1,0,4);
+//    tgf(2,6,3);
+//    tgf(6,7,3);
+    tgf(8,0,1);
+    tgf(8,1,2);
+    tgf(8,2,3);
+    tgf(8,3,0);
+    tgf(9,0,3);
+    tgf(9,3,7);
+    tgf(9,7,4);
+    tgf(9,4,0);
+    tgf(10,5,4);
+    tgf(10,4,7);
+    tgf(10,7,6);
+    tgf(10,6,5);
+    tgf(11,1,5);
+    tgf(11,5,6);
+    tgf(11,6,2);
+    tgf(11,2,1);
+    tgf(12,4,5);
+    tgf(12,5,1);
+    tgf(12,1,0);
+    tgf(12,0,4);
+    tgf(12,4,5);
+    tgf(13,3,2);
+    tgf(13,2,6);
+    tgf(13,6,7);
+    tgf(13,7,3);
 
     _renderMesh = Mesh::create(positions, normals, texs, triangleIndex);
     _renderMesh->retain();
@@ -120,8 +167,8 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     _meshCommand = new MeshCommand();
     _meshCommand->genMaterialID(0, getGLProgramState(), _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), _blendFunc);
     _meshCommand->init(_globalZOrder, 0, getGLProgramState(), _blendFunc, _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), (GLenum)_renderMesh->getPrimitiveType(), (GLenum)_renderMesh->getIndexFormat(), _renderMesh->getIndexCount(), transform, flags);
-    _meshCommand->setCullFaceEnabled(false);
-    _meshCommand->setDepthTestEnabled(false);
+    _meshCommand->setCullFaceEnabled(true);
+    _meshCommand->setDepthTestEnabled(true);
     Color4F color(getDisplayedColor());
     color.a = getDisplayedOpacity() / 255.0f;
     _meshCommand->setDisplayColor(Vec4(color.r, color.g, color.b, color.a));
