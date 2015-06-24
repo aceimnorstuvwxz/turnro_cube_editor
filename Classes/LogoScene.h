@@ -21,9 +21,9 @@ public:
 
     CREATE_FUNC(LogoScene);
 private:
-    const float default_logo_time = 2.3f;
+    const float default_logo_time = 1.0f;
     const std::vector<std::pair<std::string, float> > logoImages = {
-        {"images/logo_only.png", default_logo_time}
+        {"images/logo_v0.png", default_logo_time}
     };
     const float full_show = 0.6f;
 };

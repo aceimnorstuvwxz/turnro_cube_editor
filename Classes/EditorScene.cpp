@@ -84,7 +84,7 @@ bool EditorScene::init()
 
     // state label
     _stateLabel = Label::createWithTTF("state string", "fonts/consola.ttf", 14);
-    _stateLabel->setPosition(size * Vec2{0.1f,0.9f});
+    _stateLabel->setPosition(Vec2{size.width*0.1f,size.height*0.9f});
     _uiLayer->addChild(_stateLabel, 0);
 
     // keyboard

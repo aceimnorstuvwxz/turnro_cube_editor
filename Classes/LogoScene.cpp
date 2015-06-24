@@ -9,7 +9,7 @@
 #include "LogoScene.h"
 #include "Common.h"
 #include "EditorScene.h"
-
+#include "WelcomeScene.h"
 #include <vector>
 
 USING_NS_CC;
@@ -63,7 +63,7 @@ bool LogoScene::init()
 //        }
         sp->runAction(seq);
     }
-    scheduleOnce([&delaySum](float){Director::getInstance()->replaceScene(EditorScene::create());}, delaySum, "editor_scene");
+    scheduleOnce([&delaySum](float){Director::getInstance()->replaceScene(WelcomeScene::create());}, delaySum, "editor_scene");
 
     return true;
 }
