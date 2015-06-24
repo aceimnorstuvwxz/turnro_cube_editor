@@ -85,14 +85,6 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
     tfunc(-1,0,0);
     tfunc(0,1,0);
     tfunc(0,-1,0);
-//    auto ff = [&positions](float a, float b, float c){
-//        positions.push_back(a);
-//        positions.push_back(b);
-//        positions.push_back(c);
-//    };
-//    ff(-half, half, half);
-//    ff(-half, -half, half);
-//    ff(half, half, half);
 
     // 12 triangles
     std::vector<unsigned short> triangleIndex;
@@ -101,18 +93,6 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
         triangleIndex.push_back(b);
         triangleIndex.push_back(c);
     };
-//    tgf(0,1,2);
-//    tgf(2,3,0);
-//    tgf(4,0,3);
-//    tgf(3,7,4);
-//    tgf(4,7,5);
-//    tgf(5,7,6);
-//    tgf(5,6,1);
-//    tgf(6,2,1);
-//    tgf(5,1,4);
-//    tgf(1,0,4);
-//    tgf(2,6,3);
-//    tgf(6,7,3);
     tgf(8,0,1);
     tgf(8,1,2);
     tgf(8,2,3);
