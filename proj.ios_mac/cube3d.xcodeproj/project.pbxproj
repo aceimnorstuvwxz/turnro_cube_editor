@@ -334,9 +334,9 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B5C603011B3C62070076A820 /* MicroCube */,
 				B5C602ED1B3B32780076A820 /* characters.json */,
 				B5C602EE1B3B32780076A820 /* message.json */,
+				B5C603011B3C62070076A820 /* MicroCube */,
 				B506159D1B26D24100FBAD9F /* 3d */,
 				B50615921B26C90D00FBAD9F /* images */,
 				B506158F1B26C7E400FBAD9F /* sound */,

@@ -12,6 +12,9 @@
 #include "../rapidjson/filereadstream.h"
 
 #include <cstdio>
+#include <vector>
+
+#include <sys/stat.h> //mkdir
 
 USING_NS_CC;
 
@@ -46,6 +49,8 @@ bool BuildingScene::init()
 
     this->addChild(StateInfoLayer::create());
 
+    reloadMetaCubes();
+
     return true;
 }
 
@@ -54,10 +59,10 @@ void BuildingScene::reloadMetaCubes()
     FILE* fp = fopen(EditState::s()->getCubeMetaFilePath().c_str(), "r"); // TODO if Windows using "rb"
 
     if (fp == NULL) {
-        CCLOG("error, metacubes.json not existes, copy default metacubes.json to there");
-        // TODO if not exist, copy default there
-        // copy code
-        // reopen as fp
+        CCLOG("Metacubes not exists, copy template workspace there.");
+        copyTemplateWorkspace();
+        // reopen
+        fp = fopen(EditState::s()->getCubeMetaFilePath().c_str(), "r");
     }
 
     assert(fp != NULL);
@@ -70,5 +75,42 @@ void BuildingScene::reloadMetaCubes()
     fclose(fp);
 
     //
+}
+
+void BuildingScene::copyTemplateWorkspace()
+{
+    auto fileListString = FileUtils::getInstance()->getStringFromFile("MicroCube/filelist.json");
+    CCLOG(fileListString.c_str());
+    rjson::Document doc;
+    doc.Parse(fileListString.c_str());
+    std::vector<std::string> dirs;
+    std::vector<std::string> files;
+    auto& dirlist = doc["directories"];
+    for (auto iter = dirlist.Begin(); iter != dirlist.End(); iter++) {
+        std::string str = iter->GetString();
+        CCLOG(str.c_str());
+        dirs.push_back(str);
+    }
+    auto& filelist = doc["files"];
+    for (auto iter = filelist.Begin(); iter != filelist.End(); iter++) {
+        std::string str = iter->GetString();
+        CCLOG(str.c_str());
+        files.push_back(str);
+    }
+    // create base dir
+    mkdir(EditState::s()->getBasePath().c_str(), 0777);
+    for (int i = 0; i < dirs.size(); i++) {
+        std::string dst = EditState::s()->getBasePath()+dirs[i];
+        mkdir(dst.c_str(), 0777);
+    }
+    for (int i = 0; i < files.size(); i++) {
+        auto data = FileUtils::getInstance()->getDataFromFile("MicroCube/" + files[i]);
+        std::string dst = EditState::s()->getBasePath()+files[i];
+        CCLOG(dst.c_str());
+        FILE* fp = fopen((EditState::s()->getBasePath()+files[i]).c_str(), "w");
+        assert(fp != NULL);
+        fwrite(data.getBytes(), sizeof(unsigned char), data.getSize(), fp);
+        fclose(fp);
+    }
 }
 

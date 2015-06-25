@@ -1,0 +1,15 @@
+{
+    "comment":"代码根据此文件列表来拷贝模板文件到用户的workspace",
+    "directories":
+    [
+     "shaders",
+     "textures"
+    ],
+    "files":
+    [
+     "metacubes.json",
+     "shaders/default.fsh",
+     "shaders/default.vsh",
+     "textures/leopard.png"
+    ]
+}

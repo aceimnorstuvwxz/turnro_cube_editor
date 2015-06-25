@@ -14,6 +14,7 @@ public:
 
 private:
     void reloadMetaCubes();
+    void copyTemplateWorkspace();
 };
 
 #endif /* defined(__cube3d__BuildingScene__) */

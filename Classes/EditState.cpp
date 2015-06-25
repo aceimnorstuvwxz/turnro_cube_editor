@@ -9,7 +9,7 @@ EditState EditState::_instance;
 
 std::string EditState::getBasePath()
 {
-    return FileUtils::getInstance()->getWritablePath() + Msg::s()["workspace"] + "/";
+    return FileUtils::getInstance()->getWritablePath() + "MicroCube"+ "/";
 }
 
 std::string EditState::getCubeMetaFilePath()
