@@ -80,7 +80,7 @@ void BuildingScene::reloadMetaCubes()
 void BuildingScene::copyTemplateWorkspace()
 {
     auto fileListString = FileUtils::getInstance()->getStringFromFile("MicroCube/filelist.json");
-    CCLOG(fileListString.c_str());
+    CCLOG("%s", fileListString.c_str());
     rjson::Document doc;
     doc.Parse(fileListString.c_str());
     std::vector<std::string> dirs;
@@ -88,13 +88,13 @@ void BuildingScene::copyTemplateWorkspace()
     auto& dirlist = doc["directories"];
     for (auto iter = dirlist.Begin(); iter != dirlist.End(); iter++) {
         std::string str = iter->GetString();
-        CCLOG(str.c_str());
+        CCLOG("%s", str.c_str());
         dirs.push_back(str);
     }
     auto& filelist = doc["files"];
     for (auto iter = filelist.Begin(); iter != filelist.End(); iter++) {
         std::string str = iter->GetString();
-        CCLOG(str.c_str());
+        CCLOG("%s", str.c_str());
         files.push_back(str);
     }
     // create base dir
@@ -106,7 +106,7 @@ void BuildingScene::copyTemplateWorkspace()
     for (int i = 0; i < files.size(); i++) {
         auto data = FileUtils::getInstance()->getDataFromFile("MicroCube/" + files[i]);
         std::string dst = EditState::s()->getBasePath()+files[i];
-        CCLOG(dst.c_str());
+        CCLOG("%s", dst.c_str());
         FILE* fp = fopen((EditState::s()->getBasePath()+files[i]).c_str(), "w");
         assert(fp != NULL);
         fwrite(data.getBytes(), sizeof(unsigned char), data.getSize(), fp);
