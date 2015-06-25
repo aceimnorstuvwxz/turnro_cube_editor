@@ -10,14 +10,20 @@
 class EditState
 {
 public:
-    EditState* s(){ return &_instance; };
+    static EditState* s(){ return &_instance; };
 
     std::string getBasePath();
     std::string getCubeMetaFilePath();
 
+    void setUnitName(const std::string& unitName);
+    std::string getExtraUnitFilePath();
+    std::string getUnitFilePath();
+
 private:
     EditState(){};
     static EditState _instance;
+
+    std::string _unitName;
 };
 
 #endif /* defined(__cube3d__EditState__) */

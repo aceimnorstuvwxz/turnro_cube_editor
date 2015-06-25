@@ -8,8 +8,11 @@
 
 #include "TRBaseScene.h"
 #include "uiconf.h"
+#include "format.h"
 
 USING_NS_CC;
+
+int TRBaseScene::_keyAi = 0;
 
 bool TRBaseScene::init()
 {
@@ -62,4 +65,9 @@ cocos2d::Vec2 TRBaseScene::genPos(const cocos2d::Vec2& pos)
 cocos2d::Vec3 TRBaseScene::genPos3D(const cocos2d::Vec2& pos, float z){
     auto size = Director::getInstance()->getVisibleSize();
     return {size.width * pos.x, size.height * pos.y, z};
+}
+
+std::string TRBaseScene::genKey()
+{
+    return fmt::sprintf("genkey%d", _keyAi++);
 }

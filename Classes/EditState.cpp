@@ -14,5 +14,20 @@ std::string EditState::getBasePath()
 
 std::string EditState::getCubeMetaFilePath()
 {
-    return getBasePath() + "cubemeta.json";
+    return getBasePath() + "metacubes.json";
+}
+
+void EditState::setUnitName(const std::string& unitName)
+{
+    _unitName = unitName;
+}
+
+std::string EditState::getExtraUnitFilePath()
+{
+    return getBasePath() + _unitName + ".cubex";
+}
+
+std::string EditState::getUnitFilePath()
+{
+    return getBasePath() + _unitName + ".cube";
 }

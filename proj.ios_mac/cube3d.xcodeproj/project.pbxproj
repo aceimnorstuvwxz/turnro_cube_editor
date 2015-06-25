@@ -86,6 +86,10 @@
 		B5C602F71B3B34230076A820 /* WelcomeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602F41B3B34230076A820 /* WelcomeScene.cpp */; };
 		B5C602FA1B3B39D30076A820 /* EditState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602F81B3B39D30076A820 /* EditState.cpp */; };
 		B5C602FB1B3B39D30076A820 /* EditState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602F81B3B39D30076A820 /* EditState.cpp */; };
+		B5C602FE1B3C421B0076A820 /* BuildingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */; };
+		B5C602FF1B3C421B0076A820 /* BuildingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */; };
+		B5C603021B3C62070076A820 /* MicroCube in Resources */ = {isa = PBXBuildFile; fileRef = B5C603011B3C62070076A820 /* MicroCube */; };
+		B5C603031B3C62070076A820 /* MicroCube in Resources */ = {isa = PBXBuildFile; fileRef = B5C603011B3C62070076A820 /* MicroCube */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -203,6 +207,9 @@
 		B5C602F51B3B34230076A820 /* WelcomeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeScene.h; sourceTree = "<group>"; };
 		B5C602F81B3B39D30076A820 /* EditState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditState.cpp; sourceTree = "<group>"; };
 		B5C602F91B3B39D30076A820 /* EditState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditState.h; sourceTree = "<group>"; };
+		B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingScene.cpp; sourceTree = "<group>"; };
+		B5C602FD1B3C421B0076A820 /* BuildingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingScene.h; sourceTree = "<group>"; };
+		B5C603011B3C62070076A820 /* MicroCube */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MicroCube; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -327,6 +334,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B5C603011B3C62070076A820 /* MicroCube */,
 				B5C602ED1B3B32780076A820 /* characters.json */,
 				B5C602EE1B3B32780076A820 /* message.json */,
 				B506159D1B26D24100FBAD9F /* 3d */,
@@ -342,6 +350,7 @@
 		46880B8319C43A87006E1F66 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B5C603001B3C42D50076A820 /* logic */,
 				B5C602F31B3B34100076A820 /* ui */,
 				B5C602E01B3B32500076A820 /* format.cpp */,
 				B5C602E11B3B32500076A820 /* format.h */,
@@ -364,8 +373,6 @@
 				B504B2591B28546B00DA6EE1 /* CubeSprite.h */,
 				B504B2E71B29A31200DA6EE1 /* BoxSprite.cpp */,
 				B504B2E81B29A31200DA6EE1 /* BoxSprite.h */,
-				B5C602F81B3B39D30076A820 /* EditState.cpp */,
-				B5C602F91B3B39D30076A820 /* EditState.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -425,8 +432,19 @@
 				B50615961B26CA1500FBAD9F /* LogoScene.h */,
 				B5C602F41B3B34230076A820 /* WelcomeScene.cpp */,
 				B5C602F51B3B34230076A820 /* WelcomeScene.h */,
+				B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */,
+				B5C602FD1B3C421B0076A820 /* BuildingScene.h */,
 			);
 			name = ui;
+			sourceTree = "<group>";
+		};
+		B5C603001B3C42D50076A820 /* logic */ = {
+			isa = PBXGroup;
+			children = (
+				B5C602F81B3B39D30076A820 /* EditState.cpp */,
+				B5C602F91B3B39D30076A820 /* EditState.h */,
+			);
+			name = logic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -541,6 +559,7 @@
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				B50615931B26C90D00FBAD9F /* images in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
+				B5C603021B3C62070076A820 /* MicroCube in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
@@ -561,6 +580,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5C603031B3C62070076A820 /* MicroCube in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				B5C602F21B3B32780076A820 /* message.json in Resources */,
 				B5C602F01B3B32780076A820 /* characters.json in Resources */,
@@ -595,6 +615,7 @@
 				B5C602EB1B3B32500076A820 /* TRBaseScene.cpp in Sources */,
 				B506158D1B26C6E000FBAD9F /* McdLayer.cpp in Sources */,
 				B5C602E91B3B32500076A820 /* Msg.cpp in Sources */,
+				B5C602FE1B3C421B0076A820 /* BuildingScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +629,7 @@
 				B5C602EC1B3B32500076A820 /* TRBaseScene.cpp in Sources */,
 				B50615981B26CA1500FBAD9F /* LogoScene.cpp in Sources */,
 				B5C602FB1B3B39D30076A820 /* EditState.cpp in Sources */,
+				B5C602FF1B3C421B0076A820 /* BuildingScene.cpp in Sources */,
 				B50615A51B27504500FBAD9F /* cubedef.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				B5C602F71B3B34230076A820 /* WelcomeScene.cpp in Sources */,

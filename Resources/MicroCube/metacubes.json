@@ -1,0 +1,41 @@
+{
+	"default_shader":["shaders/default.vsh", "shaders/default.fsh"],
+	"list":
+	[
+		{
+			"id":0,
+			"name":"FirstMetaCube",
+			"comment":"light blue virtual meta cube",
+			"virtual":1,
+			"color":[0,0,256,100]
+		},
+		{
+			"id":1,
+			"name":"grayCube",
+			"comment":"a gray cube",
+			"color":[100,100,100,256]
+		},
+		{
+			"id":2,
+			"name":"HotRed",
+			"color":[200,0,0,256]
+		},
+		{
+			"id":3,
+			"name":"HotGreen",
+			"color":[0,200,0,256],
+		},
+		{
+			"id":4,
+			"name":"HotBlue",
+			"color":[0,0,256,256]
+		},
+		{
+			"id":5,
+			"name":"SexyLeopard",
+			"comment":"豹纹方格，使用了纹理贴图和定制的shader，纹理坐标是简单的按方格放，方格的6个面不会有区分",
+			"texture":"texture/leopard.png",
+			"shader":["shaders/texture.vsh", "shaders/texture.fsh"]
+		}
+	]
+}

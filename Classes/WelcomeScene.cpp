@@ -7,6 +7,8 @@
 #include <vector>
 #include <iostream>
 #include "uiconf.h"
+#include "EditState.h"
+#include "BuildingScene.h"
 
 // 欢迎页，梦开始的地方，欢迎被渲染。
 USING_NS_CC;
@@ -37,6 +39,13 @@ bool WelcomeScene::init()
         }
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+    // dev
+    auto func = [this](float dt){
+        _input = "devunit";
+        this->onInputFinish();
+    };
+    scheduleOnce(func, 0.5f, genKey());
 
     return true;
 }
@@ -70,6 +79,7 @@ void WelcomeScene::onKeyPressed(const EventKeyboard::KeyCode& code)
         }
     }
     _lbInput->setString(_input);
+
 }
 
 void WelcomeScene::onInputFinish()
@@ -77,4 +87,11 @@ void WelcomeScene::onInputFinish()
     auto path = FileUtils::getInstance()->getWritablePath();
     CCLOG("%s", path.c_str());
 
+    //check
+    if (_input.size() <= 0) return;
+
+    //go
+    EditState::s()->setUnitName(_input);
+
+    Director::getInstance()->pushScene(BuildingScene::create());
 }
