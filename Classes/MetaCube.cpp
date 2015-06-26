@@ -7,7 +7,7 @@
 //
 
 #include "MetaCube.h"
-
+#include "EditState.h"
 USING_NS_CC;
 
 void MetaCube::reload()
@@ -17,8 +17,13 @@ void MetaCube::reload()
         _programState->release();
         _programState = nullptr;
     }
+    
+    if (_texture) {
+        _texture->release();
+        _texture = nullptr;
+    }
 
-    //load
+    // ProgramState
     auto _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
     auto fileUtils = FileUtils::getInstance();
     auto vertSource = fileUtils->getStringFromFile("3d/cube.vsh");
@@ -34,79 +39,58 @@ void MetaCube::reload()
     _programState = GLProgramState::getOrCreateWithGLProgram(glprogram);
     _programState->retain();
 
-    // create the mesh
+    // Mesh
     std::vector<float> positions;
     std::vector<float> normals;
     std::vector<float> colors;
     std::vector<float> texs;
 
-    // 8 vertex
-    float _cubeLength = 10;
-    float half = _cubeLength * 0.5f;
-    auto tfunc = [&positions, &texs, &half, &colors, &normals](int x, int y, int z){
-        positions.push_back(x == -1 ? -half :
-                            x == 0 ? 0 : half);
-        positions.push_back(y == -1 ? -half :
-                            y == 0 ? 0 : half);
-        positions.push_back(z == -1 ? -half :
-                            z == 0 ? 0 : half);
-
-        if (x * y * z == 0) {
-            texs.push_back(0.f);
-            texs.push_back(0.f);
-        } else {
-            texs.push_back(1.f);
-            texs.push_back(1.f);
-        }
-
+    float vertices[24*8] = {
+        0.500000,  0.500000,  0.500000,  0.000000,  0.000000,  1.000000,  0.625000,  0.250000,
+        -0.500000,  0.500000,  0.500000,  0.000000,  0.000000,  1.000000,  0.375000,  0.250000,
+        -0.500000, -0.500000,  0.500000,  0.000000,  0.000000,  1.000000,  0.375000,  0.000000,
+        0.500000, -0.500000,  0.500000,  0.000000,  0.000000,  1.000000,  0.625000,  0.000000,
+        0.500000,  0.500000,  0.500000,  0.000000,  1.000000,  0.000000,  0.625000,  0.250000,
+        0.500000,  0.500000, -0.500000,  0.000000,  1.000000,  0.000000,  0.625000,  0.500000,
+        -0.500000,  0.500000,  0.500000,  0.000000,  1.000000,  0.000000,  0.375000,  0.250000,
+        -0.500000,  0.500000, -0.500000,  0.000000,  1.000000,  0.000000,  0.375000,  0.500000,
+        0.500000, -0.500000, -0.500000,  0.000000,  0.000000, -1.000000,  0.625000,  0.750000,
+        -0.500000, -0.500000, -0.500000,  0.000000,  0.000000, -1.000000,  0.375000,  0.750000,
+        -0.500000,  0.500000, -0.500000,  0.000000,  0.000000, -1.000000,  0.375000,  0.500000,
+        0.500000,  0.500000, -0.500000,  0.000000,  0.000000, -1.000000,  0.625000,  0.500000,
+        0.500000, -0.500000,  0.500000,  0.000000, -1.000000,  0.000000,  0.625000,  1.000000,
+        -0.500000, -0.500000,  0.500000,  0.000000, -1.000000,  0.000000,  0.375000,  1.000000,
+        -0.500000, -0.500000, -0.500000,  0.000000, -1.000000,  0.000000,  0.375000,  0.750000,
+        0.500000, -0.500000, -0.500000,  0.000000, -1.000000,  0.000000,  0.625000,  0.750000,
+        0.500000,  0.500000,  0.500000,  1.000000,  0.000000,  0.000000,  0.625000,  0.250000,
+        0.500000, -0.500000,  0.500000,  1.000000,  0.000000,  0.000000,  0.625000,  0.000000,
+        0.500000,  0.500000, -0.500000,  1.000000,  0.000000,  0.000000,  0.875000,  0.250000,
+        0.500000, -0.500000, -0.500000,  1.000000,  0.000000,  0.000000,  0.875000,  0.000000,
+        -0.500000,  0.500000,  0.500000, -1.000000,  0.000000,  0.000000,  0.375000,  0.250000,
+        -0.500000, -0.500000, -0.500000, -1.000000,  0.000000,  0.000000,  0.125000,  0.000000,
+        -0.500000, -0.500000,  0.500000, -1.000000,  0.000000,  0.000000,  0.375000,  0.000000,
+        -0.500000,  0.500000, -0.500000, -1.000000,  0.000000,  0.000000,  0.125000,  0.250000
     };
-    tfunc(1,1,1);
-    tfunc(-1,1,1);
-    tfunc(-1,-1,1);
-    tfunc(1,-1,1);
-    tfunc(1,1,-1);
-    tfunc(-1,1,-1);
-    tfunc(-1,-1,-1);
-    tfunc(1,-1,-1);
-    tfunc(0,0,1);
-    tfunc(1,0,0);
-    tfunc(0,0,-1);
-    tfunc(-1,0,0);
-    tfunc(0,1,0);
-    tfunc(0,-1,0);
+
+    // 24 vertex
+    float* vp = vertices;
+    for (int i = 0; i < 24; i++, vp+=8) {
+        positions.push_back(vp[0]*_cubeLength);
+        positions.push_back(vp[1]*_cubeLength);
+        positions.push_back(vp[2]*_cubeLength);
+        normals.push_back(vp[3]);
+        normals.push_back(vp[4]);
+        normals.push_back(vp[5]);
+        texs.push_back(vp[6]);
+        texs.push_back(vp[7]);
+    }
 
     // 12 triangles
-    std::vector<unsigned short> triangleIndex;
-    auto tgf = [&triangleIndex](unsigned short a, unsigned short b, unsigned short c){
-        triangleIndex.push_back(a);
-        triangleIndex.push_back(b);
-        triangleIndex.push_back(c);
+    std::vector<unsigned short> triangleIndex = {
+        0,   1,   2,   0,   2,   3,   4,   5,   6,   6,   5,   7,
+        8,   9,  10,   8,  10,  11,  12,  13,  14,  12,  14,  15,
+        16,  17,  18,  17,  19,  18,  20,  21,  22,  21,  20,  23
     };
-    tgf(8,0,1);
-    tgf(8,1,2);
-    tgf(8,2,3);
-    tgf(8,3,0);
-    tgf(9,0,3);
-    tgf(9,3,7);
-    tgf(9,7,4);
-    tgf(9,4,0);
-    tgf(10,5,4);
-    tgf(10,4,7);
-    tgf(10,7,6);
-    tgf(10,6,5);
-    tgf(11,1,5);
-    tgf(11,5,6);
-    tgf(11,6,2);
-    tgf(11,2,1);
-    tgf(12,4,5);
-    tgf(12,5,1);
-    tgf(12,1,0);
-    tgf(12,0,4);
-    tgf(12,4,5);
-    tgf(13,3,2);
-    tgf(13,2,6);
-    tgf(13,6,7);
-    tgf(13,7,3);
 
     _renderMesh = Mesh::create(positions, normals, texs, triangleIndex);
     _renderMesh->retain();
@@ -125,6 +109,11 @@ void MetaCube::reload()
         offset += meshattribute.attribSizeBytes;
     }
 
+    // Texture
+    if (this->texture.size() > 0) {
+        _texture = Director::getInstance()->getTextureCache()->addImage(EditState::s()->getBasePath() + this->texture);
+        _texture->retain(); // if error here, check if the Path to image is right,and if the image is exist.
+    }
 }
 
 cocos2d::GLProgramState* MetaCube::getProgramState()
@@ -135,4 +124,9 @@ cocos2d::GLProgramState* MetaCube::getProgramState()
 cocos2d::Mesh* MetaCube::getRenderMesh()
 {
     return _renderMesh;
+}
+
+Texture2D* MetaCube::getTexture()
+{
+    return _texture;
 }

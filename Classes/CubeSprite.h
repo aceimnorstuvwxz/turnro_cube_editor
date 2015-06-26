@@ -25,6 +25,7 @@ protected:
     cocos2d::Mesh* _renderMesh;
     cocos2d::MeshCommand* _meshCommand;
     cocos2d::BlendFunc _blendFunc;
+    cocos2d::Texture2D* _texture;
     
     //data init, actually not necessary.
     CubeSprite():

@@ -31,10 +31,13 @@ public:
     void reload();
     cocos2d::GLProgramState* getProgramState();
     cocos2d::Mesh* getRenderMesh();
+    cocos2d::Texture2D* getTexture();
 
 private:
     cocos2d::GLProgramState* _programState = nullptr;
     cocos2d::Mesh* _renderMesh = nullptr;
+    cocos2d::Texture2D* _texture = nullptr;
+    float _cubeLength = 10;
 };
 
 #endif /* defined(__cube3d__MetaCube__) */

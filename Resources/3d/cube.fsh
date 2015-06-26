@@ -7,12 +7,13 @@ varying vec4 v_color;
 varying vec3 v_normal;
 
 uniform vec4 u_color;
+uniform sampler2D u_texture;
 
 void main()
 {
     float x = v_texCoord.x;
-    if (x >= 0.95) {
-        gl_FragColor = vec4(0.0, 1.0, 1.0, 1.0);
+    if (u_color.a == 0.0) {
+        gl_FragColor = texture2D(u_texture, v_texCoord);
     } else {
         gl_FragColor = u_color;
     }

@@ -26,9 +26,11 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
     _metaCubeId = metaCubeId;
     _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
     MetaCube* metaCube = EditState::s()->getMetaCube(metaCubeId);
+    // 这个共享机制，还可以根据普通2D的Sprite来修改。
     this->setGLProgramState(metaCube->getProgramState());
     _color = EditState::s()->getMetaCube(metaCubeId)->color;
     _renderMesh = metaCube->getRenderMesh();
+    _texture = metaCube->getTexture();
     
     return true;
 }
@@ -42,8 +44,7 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     _meshCommand->setCullFaceEnabled(true);
     _meshCommand->setDepthTestEnabled(true);
     _meshCommand->setTransparent(true);
-//    Color4F color(getDisplayedColor());
-//    color.a = getDisplayedOpacity() / 255.0f;
+    if (_texture) getGLProgramState()->setUniformTexture("u_texture", _texture);
     _meshCommand->setDisplayColor(_color);
     renderer->addCommand(_meshCommand);
     Node::draw(renderer, transform, flags);
