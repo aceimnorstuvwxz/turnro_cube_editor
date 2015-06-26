@@ -6,7 +6,7 @@
 			"id":0,
 			"name":"FirstMetaCube",
 			"comment":"light blue virtual meta cube",
-			"virtual":1,
+			"unreal":1,
 			"color":[0,0,256,100]
 		},
 		{
@@ -23,7 +23,7 @@
 		{
 			"id":3,
 			"name":"HotGreen",
-			"color":[0,200,0,256],
+			"color":[0,200,0,256]
 		},
 		{
 			"id":4,

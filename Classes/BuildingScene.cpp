@@ -43,6 +43,7 @@ private:
 
 };
 
+
 bool BuildingScene::init()
 {
     assert(TRBaseScene::init());
@@ -56,6 +57,10 @@ bool BuildingScene::init()
 
 void BuildingScene::reloadMetaCubes()
 {
+
+    //clear old
+    _metaCubeMap.clear();
+
     FILE* fp = fopen(EditState::s()->getCubeMetaFilePath().c_str(), "r"); // TODO if Windows using "rb"
 
     if (fp == NULL) {
@@ -74,7 +79,69 @@ void BuildingScene::reloadMetaCubes()
     doc.ParseStream(is);
     fclose(fp);
 
-    //
+    // extract metacubes
+    assert(doc.HasMember("default_shader"));
+    auto& defaultShader = doc["default_shader"];
+    assert(defaultShader.Size() == 2);
+    int shaderIndex = 0;
+    for (auto iter = defaultShader.Begin(); iter != defaultShader.End(); iter++, shaderIndex++) {
+        _defauterShader[shaderIndex] = iter->GetString();
+    }
+    CCLOG("%s %s", _defauterShader[0].c_str(), _defauterShader[1].c_str());
+    assert(doc.HasMember("list"));
+    auto& list = doc["list"];
+    auto getStr = [](const rjson::Value& obj, const char* key) {
+        if (obj.HasMember(key)) {
+            assert(obj[key].IsString());
+            return std::string(obj[key].GetString());
+        }
+        return std::string("");
+    };
+    for (auto iter = list.Begin(); iter != list.End(); iter++) {
+        MetaCube metacube;
+        //id
+        assert(iter->HasMember("id"));
+        metacube.id = (*iter)["id"].GetInt();
+        //name
+        metacube.name = getStr(*iter, "name");
+        //comment
+        metacube.comment = getStr(*iter, "comment");
+        //texture
+        metacube.texture = getStr(*iter, "texture");
+        //color
+        if (iter->HasMember("color")) {
+            auto& color = (*iter)["color"];
+            assert(color.IsArray() && color.Size() == 4);
+            int tmpIndex = 0;
+            unsigned char colordata[4];
+            for (auto i = color.Begin(); i != color.End(); i++, tmpIndex++) {
+                int a = i->GetInt();
+                assert(a>=0 && a<=256);
+                colordata[tmpIndex] = a;
+            }
+            metacube.color = Color4B{colordata[0], colordata[1], colordata[2], colordata[3]};
+        }
+        //shader
+        if (iter->HasMember("shader")) {
+            auto& shader = (*iter)["shader"];
+            assert(shader.IsArray() && shader.Size() == 2);
+            int tmpIndex = 0;
+            for (auto i = shader.Begin(); i != shader.End(); i++, tmpIndex++) {
+                assert(i->IsString());
+                metacube.shader[tmpIndex] = i->GetString();
+            }
+        }
+        //unreal
+        if (iter->HasMember("unreal")) {
+            auto& unreal = (*iter)["unreal"];
+            assert(unreal.IsInt());
+            metacube.unreal = unreal.GetInt() != 0;
+        }
+
+        _metaCubeMap[metacube.id] = metacube;
+    }
+
+    //extract metacubes from file is done. Now we will display them.
 }
 
 void BuildingScene::copyTemplateWorkspace()
@@ -112,5 +179,6 @@ void BuildingScene::copyTemplateWorkspace()
         fwrite(data.getBytes(), sizeof(unsigned char), data.getSize(), fp);
         fclose(fp);
     }
+
 }
 
