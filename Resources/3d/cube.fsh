@@ -3,13 +3,17 @@ precision mediump float;
 #endif
 
 varying vec2 v_texCoord;
+varying vec4 v_color;
+varying vec3 v_normal;
+
+uniform vec4 u_color;
 
 void main()
 {
     float x = v_texCoord.x;
-    if (x >= 0.98) {
-        gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+    if (x >= 0.95) {
+        gl_FragColor = vec4(0.0, 1.0, 1.0, 1.0);
     } else {
-        gl_FragColor = vec4(x, 1.0, 1.0, 1.0);
+        gl_FragColor = u_color;
     }
 }

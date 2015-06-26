@@ -20,7 +20,8 @@ protected:
     //data
     float _cubeLength;
     cocos2d::Vec3 _posRaw;
-    int metaCubeId;
+    int _metaCubeId;
+    cocos2d::Vec4 _color;
     cocos2d::Mesh* _renderMesh;
     cocos2d::GLProgramState* _programState;
     cocos2d::MeshCommand* _meshCommand;

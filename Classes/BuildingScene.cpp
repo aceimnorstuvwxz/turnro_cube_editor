@@ -125,13 +125,13 @@ void BuildingScene::reloadMetaCubes()
             auto& color = (*iter)["color"];
             assert(color.IsArray() && color.Size() == 4);
             int tmpIndex = 0;
-            unsigned char colordata[4];
+            float colordata[4];
             for (auto i = color.Begin(); i != color.End(); i++, tmpIndex++) {
-                int a = i->GetInt();
-                assert(a>=0 && a<=256);
+                float a = i->GetDouble();
+                assert(a >= 0.f && a <= 1.f);
                 colordata[tmpIndex] = a;
             }
-            metacube.color = Color4B{colordata[0], colordata[1], colordata[2], colordata[3]};
+            metacube.color = {colordata[0], colordata[1], colordata[2], colordata[3]};
         }
         //shader
         if (iter->HasMember("shader")) {

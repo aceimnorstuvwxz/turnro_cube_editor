@@ -3,15 +3,21 @@ precision mediump float;
 #endif
 
 // Inputs
+attribute vec4 a_color;
 attribute vec4 a_position;
 attribute vec2 a_texCoord;
+attribute vec3 a_normal;
 
 // Varyings
 //varying vec2 v_texCoord;
 #ifdef GL_ES
 varying mediump vec2 v_texCoord;
+varying mediump vec4 v_color;
+varying mediump vec3 v_normal;
 #else
 varying vec2 v_texCoord;
+varying vec4 v_color;
+varying vec3 v_normal;
 #endif
 
 //uniform	float radius ;
@@ -33,10 +39,13 @@ varying vec2 v_texCoord;
 //
 //	return uv;
 //}
+
 uniform vec4 u_color;
 
 void main()
 {
     gl_Position = CC_MVPMatrix * a_position;
     v_texCoord = a_texCoord;
+    v_color = a_color;
+    v_normal = a_normal;
 }

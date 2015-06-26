@@ -44,3 +44,7 @@ std::unordered_map<int, MetaCube>* EditState::getMetaCubeMap()
 {
     return &_metaCubeMap;
 }
+MetaCube* EditState::getMetaCube(int id)
+{
+    return &_metaCubeMap[id];
+}

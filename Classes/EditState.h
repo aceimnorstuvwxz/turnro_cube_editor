@@ -13,12 +13,12 @@ public:
     int id;
     std::string name;
     std::string comment;
-    cocos2d::Color4B color;
+    cocos2d::Vec4 color;
     std::string texture;
     std::string shader[2];
     bool unreal;
     MetaCube():id(0),unreal(false){}
-    MetaCube(int id, const std::string& name, const std::string& comment, const cocos2d::Color4B& color, const std::string& texture, const std::string& vsh, const std::string& fsh, bool unreal):id(id), name(name), comment(comment), color(color), texture(texture), unreal(unreal){
+    MetaCube(int id, const std::string& name, const std::string& comment, const cocos2d::Vec4& color, const std::string& texture, const std::string& vsh, const std::string& fsh, bool unreal):id(id), name(name), comment(comment), color(color), texture(texture), unreal(unreal){
         this->shader[0] = vsh;
         this->shader[1] = fsh;
     }
@@ -39,7 +39,7 @@ public:
     void setDefaultVertexShader(const std::string& vsh);
     void setDefaultFragmentShader(const std::string& fsh);
     std::unordered_map<int, MetaCube>* getMetaCubeMap();
-    
+    MetaCube* getMetaCube(int id);
 private:
     EditState(){};
     static EditState _instance;

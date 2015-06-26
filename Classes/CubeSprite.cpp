@@ -3,7 +3,7 @@
 // 这个类的形式必须使用修改过的cocos2d。
 
 #include "CubeSprite.h"
-
+#include "EditState.h"
 #include <vector>
 USING_NS_CC;
 
@@ -23,6 +23,8 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
 {
     if (!Node::init()) return false;
 
+    _metaCubeId = metaCubeId;
+
     _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
     // create shader program
     // TODO 将shader共享。。。
@@ -32,6 +34,8 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
 
     auto glprogram = GLProgram::createWithByteArrays(vertSource.c_str(), fragSource.c_str());
     glprogram->bindAttribLocation("a_position", GLProgram::VERTEX_ATTRIB_POSITION);
+    glprogram->bindAttribLocation("a_color", GLProgram::VERTEX_ATTRIB_COLOR);
+    glprogram->bindAttribLocation("a_normal", GLProgram::VERTEX_ATTRIB_NORMAL);
     glprogram->link();
     glprogram->updateUniforms();
 
@@ -47,9 +51,10 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
     std::vector<float> colors;
     std::vector<float> texs;
 
+    _color = EditState::s()->getMetaCube(metaCubeId)->color;
     // 8 vertex
     float half = _cubeLength * 0.5f;
-    auto tfunc = [&positions, &texs, &half](int x, int y, int z){
+    auto tfunc = [&positions, &texs, &half, &colors, &normals](int x, int y, int z){
         positions.push_back(x == -1 ? -half :
                             x == 0 ? 0 : half);
         positions.push_back(y == -1 ? -half :
@@ -64,6 +69,7 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
             texs.push_back(1.f);
             texs.push_back(1.f);
         }
+
     };
     tfunc(1,1,1);
     tfunc(-1,1,1);
@@ -116,7 +122,6 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
     _renderMesh = Mesh::create(positions, normals, texs, triangleIndex);
     _renderMesh->retain();
 
-
     long offset = 0;
     auto attributeCount = _renderMesh->getMeshVertexAttribCount();
     CCLOG("attributeCount = %ld", attributeCount);
@@ -142,9 +147,10 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     _meshCommand->init(_globalZOrder, 0, getGLProgramState(), _blendFunc, _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), (GLenum)_renderMesh->getPrimitiveType(), (GLenum)_renderMesh->getIndexFormat(), _renderMesh->getIndexCount(), transform, flags);
     _meshCommand->setCullFaceEnabled(true);
     _meshCommand->setDepthTestEnabled(true);
-    Color4F color(getDisplayedColor());
-    color.a = getDisplayedOpacity() / 255.0f;
-    _meshCommand->setDisplayColor(Vec4(color.r, color.g, color.b, color.a));
+    _meshCommand->setTransparent(true);
+//    Color4F color(getDisplayedColor());
+//    color.a = getDisplayedOpacity() / 255.0f;
+    _meshCommand->setDisplayColor(_color);
     renderer->addCommand(_meshCommand);
     Node::draw(renderer, transform, flags);
 }
