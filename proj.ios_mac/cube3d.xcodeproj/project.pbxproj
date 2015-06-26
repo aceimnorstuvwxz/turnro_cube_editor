@@ -92,6 +92,8 @@
 		B5C603031B3C62070076A820 /* MicroCube in Resources */ = {isa = PBXBuildFile; fileRef = B5C603011B3C62070076A820 /* MicroCube */; };
 		B5C603071B3D612E0076A820 /* BrushLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603051B3D612E0076A820 /* BrushLayer.cpp */; };
 		B5C603081B3D612E0076A820 /* BrushLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603051B3D612E0076A820 /* BrushLayer.cpp */; };
+		B5C6030B1B3D94F90076A820 /* MetaCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603091B3D94F90076A820 /* MetaCube.cpp */; };
+		B5C6030C1B3D94F90076A820 /* MetaCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603091B3D94F90076A820 /* MetaCube.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -214,6 +216,8 @@
 		B5C603011B3C62070076A820 /* MicroCube */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MicroCube; sourceTree = "<group>"; };
 		B5C603051B3D612E0076A820 /* BrushLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BrushLayer.cpp; sourceTree = "<group>"; };
 		B5C603061B3D612E0076A820 /* BrushLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrushLayer.h; sourceTree = "<group>"; };
+		B5C603091B3D94F90076A820 /* MetaCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MetaCube.cpp; sourceTree = "<group>"; };
+		B5C6030A1B3D94F90076A820 /* MetaCube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetaCube.h; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -449,6 +453,8 @@
 			children = (
 				B5C602F81B3B39D30076A820 /* EditState.cpp */,
 				B5C602F91B3B39D30076A820 /* EditState.h */,
+				B5C603091B3D94F90076A820 /* MetaCube.cpp */,
+				B5C6030A1B3D94F90076A820 /* MetaCube.h */,
 			);
 			name = logic;
 			sourceTree = "<group>";
@@ -606,6 +612,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				B5C6030B1B3D94F90076A820 /* MetaCube.cpp in Sources */,
 				B50615851B26C1D900FBAD9F /* Common.cpp in Sources */,
 				B506159B1B26CD3F00FBAD9F /* EditorScene.cpp in Sources */,
 				B50615A41B27504500FBAD9F /* cubedef.cpp in Sources */,
@@ -645,6 +652,7 @@
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				B5C602E81B3B32500076A820 /* format.cpp in Sources */,
 				B506158E1B26C6E000FBAD9F /* McdLayer.cpp in Sources */,
+				B5C6030C1B3D94F90076A820 /* MetaCube.cpp in Sources */,
 				B5C602EA1B3B32500076A820 /* Msg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

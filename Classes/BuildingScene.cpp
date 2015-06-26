@@ -150,6 +150,7 @@ void BuildingScene::reloadMetaCubes()
             metacube.unreal = unreal.GetInt() != 0;
         }
 
+        metacube.reload();
         (*(EditState::s()->getMetaCubeMap()))[metacube.id] = metacube;
     }
 

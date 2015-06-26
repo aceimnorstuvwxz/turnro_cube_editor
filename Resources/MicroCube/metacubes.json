@@ -34,6 +34,7 @@
 			"id":5,
 			"name":"SexyLeopard",
 			"comment":"豹纹方格，使用了纹理贴图和定制的shader，纹理坐标是简单的按方格放，方格的6个面不会有区分",
+            "color":[0,0,1,1],
 			"texture":"texture/leopard.png",
 			"shader":["shaders/texture.vsh", "shaders/texture.fsh"]
 		}

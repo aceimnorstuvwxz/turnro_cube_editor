@@ -23,7 +23,6 @@ protected:
     int _metaCubeId;
     cocos2d::Vec4 _color;
     cocos2d::Mesh* _renderMesh;
-    cocos2d::GLProgramState* _programState;
     cocos2d::MeshCommand* _meshCommand;
     cocos2d::BlendFunc _blendFunc;
     
@@ -32,7 +31,6 @@ protected:
     _cubeLength(10),
     _posRaw(0,0,0),
     _renderMesh(nullptr),
-    _programState(nullptr),
     _meshCommand(nullptr)
     {};
 

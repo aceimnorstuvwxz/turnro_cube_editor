@@ -10,7 +10,6 @@ bool BrushLayer::init()
 {
     assert(McdLayer::init());
 
-
     // camera
     auto size = Director::getInstance()->getVisibleSize();
     // todo use orthographic camera
@@ -22,12 +21,6 @@ bool BrushLayer::init()
     _camera->setCameraFlag(CameraFlag::USER1);
     this->addChild(_camera);
     this->setCameraMask((unsigned short)CameraFlag::USER1);
-
-    auto sp = CubeSprite::create({0,0,0}, 0);
-    sp->setPosition3D({0,0,0});
-    this->addChild(sp);
-    sp->setCameraMask(this->getCameraMask());
-    sp->runAction(RepeatForever::create(RotateBy::create(2.f, {0,360,0})));
 
     return true;
 }
@@ -51,6 +44,7 @@ void BrushLayer::reload()
         sp->setCameraMask(this->getCameraMask());
         this->addChild(sp);
         _cubeMap[iter->second.id] = sp;
+        sp->runAction(RepeatForever::create(RotateBy::create(2.f, {0,360,0})));
     }
 }
 

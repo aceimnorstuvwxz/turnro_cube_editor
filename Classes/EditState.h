@@ -6,23 +6,7 @@
 // 暗黑编辑器核心状态搜集器
 #include "cocos2d.h"
 #include <string>
-
-class MetaCube
-{
-public:
-    int id;
-    std::string name;
-    std::string comment;
-    cocos2d::Vec4 color;
-    std::string texture;
-    std::string shader[2];
-    bool unreal;
-    MetaCube():id(0),unreal(false){}
-    MetaCube(int id, const std::string& name, const std::string& comment, const cocos2d::Vec4& color, const std::string& texture, const std::string& vsh, const std::string& fsh, bool unreal):id(id), name(name), comment(comment), color(color), texture(texture), unreal(unreal){
-        this->shader[0] = vsh;
-        this->shader[1] = fsh;
-    }
-};
+#include "MetaCube.h"
 
 class EditState
 {
