@@ -14,7 +14,7 @@
 namespace config {
     const std::string window_name = "Cube3d: cube scene editor";
     const int window_w = 1000;
-    const int window_h = 800;
+    const int window_h = 700;
 }
 
 inline cocos2d::Vec2 operator*(const cocos2d::Vec2& v2, const cocos2d::Size& size)

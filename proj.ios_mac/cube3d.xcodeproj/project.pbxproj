@@ -90,6 +90,8 @@
 		B5C602FF1B3C421B0076A820 /* BuildingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */; };
 		B5C603021B3C62070076A820 /* MicroCube in Resources */ = {isa = PBXBuildFile; fileRef = B5C603011B3C62070076A820 /* MicroCube */; };
 		B5C603031B3C62070076A820 /* MicroCube in Resources */ = {isa = PBXBuildFile; fileRef = B5C603011B3C62070076A820 /* MicroCube */; };
+		B5C603071B3D612E0076A820 /* BrushLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603051B3D612E0076A820 /* BrushLayer.cpp */; };
+		B5C603081B3D612E0076A820 /* BrushLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603051B3D612E0076A820 /* BrushLayer.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
 		BF1C47F01293687400B63C5D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF1C47EA1293683800B63C5D /* QuartzCore.framework */; };
@@ -210,6 +212,8 @@
 		B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingScene.cpp; sourceTree = "<group>"; };
 		B5C602FD1B3C421B0076A820 /* BuildingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingScene.h; sourceTree = "<group>"; };
 		B5C603011B3C62070076A820 /* MicroCube */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MicroCube; sourceTree = "<group>"; };
+		B5C603051B3D612E0076A820 /* BrushLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BrushLayer.cpp; sourceTree = "<group>"; };
+		B5C603061B3D612E0076A820 /* BrushLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrushLayer.h; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -356,11 +360,7 @@
 				B5C602E11B3B32500076A820 /* format.h */,
 				B5C602E21B3B32500076A820 /* Msg.cpp */,
 				B5C602E31B3B32500076A820 /* Msg.h */,
-				B5C602E41B3B32500076A820 /* TRBaseScene.cpp */,
-				B5C602E51B3B32500076A820 /* TRBaseScene.h */,
 				B5C602E61B3B32500076A820 /* uiconf.h */,
-				B506158B1B26C6E000FBAD9F /* McdLayer.cpp */,
-				B506158C1B26C6E000FBAD9F /* McdLayer.h */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				B50615831B26C1D900FBAD9F /* Common.cpp */,
@@ -369,8 +369,6 @@
 				B506159A1B26CD3F00FBAD9F /* EditorScene.h */,
 				B50615A21B27504500FBAD9F /* cubedef.cpp */,
 				B50615A31B27504500FBAD9F /* cubedef.h */,
-				B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */,
-				B504B2591B28546B00DA6EE1 /* CubeSprite.h */,
 				B504B2E71B29A31200DA6EE1 /* BoxSprite.cpp */,
 				B504B2E81B29A31200DA6EE1 /* BoxSprite.h */,
 			);
@@ -434,6 +432,14 @@
 				B5C602F51B3B34230076A820 /* WelcomeScene.h */,
 				B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */,
 				B5C602FD1B3C421B0076A820 /* BuildingScene.h */,
+				B504B2581B28546B00DA6EE1 /* CubeSprite.cpp */,
+				B504B2591B28546B00DA6EE1 /* CubeSprite.h */,
+				B5C603051B3D612E0076A820 /* BrushLayer.cpp */,
+				B5C603061B3D612E0076A820 /* BrushLayer.h */,
+				B5C602E41B3B32500076A820 /* TRBaseScene.cpp */,
+				B5C602E51B3B32500076A820 /* TRBaseScene.h */,
+				B506158B1B26C6E000FBAD9F /* McdLayer.cpp */,
+				B506158C1B26C6E000FBAD9F /* McdLayer.h */,
 			);
 			name = ui;
 			sourceTree = "<group>";
@@ -611,6 +617,7 @@
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				B504B25A1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */,
 				B50615971B26CA1500FBAD9F /* LogoScene.cpp in Sources */,
+				B5C603071B3D612E0076A820 /* BrushLayer.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				B5C602EB1B3B32500076A820 /* TRBaseScene.cpp in Sources */,
 				B506158D1B26C6E000FBAD9F /* McdLayer.cpp in Sources */,
@@ -623,6 +630,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5C603081B3D612E0076A820 /* BrushLayer.cpp in Sources */,
 				B504B25B1B28546B00DA6EE1 /* CubeSprite.cpp in Sources */,
 				B504B2EA1B29A31200DA6EE1 /* BoxSprite.cpp in Sources */,
 				B50615861B26C1F000FBAD9F /* Common.cpp in Sources */,

@@ -1,23 +1,17 @@
+// 湍流国际
 
-//  CubeSprite.cpp
-//  cube3d
-//
-//  Created by chenbingfeng on 15/6/10.
-//
-//
-// 这样子有个问题就是VBO奔溃。
-// 从Sprite3D入手，看人家是怎么写得。
+// 这个类的形式必须使用修改过的cocos2d。
 
 #include "CubeSprite.h"
 
 #include <vector>
 USING_NS_CC;
 
-CubeSprite* CubeSprite::create(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& color)
+CubeSprite* CubeSprite::create(const cocos2d::Vec3& pos_raw, int metaCubeId)
 {
     auto sprite = new (std::nothrow) CubeSprite();
 
-    if (sprite && sprite->init(pos_raw, color)) {
+    if (sprite && sprite->init(pos_raw, metaCubeId)) {
         sprite->autorelease();
     } else {
         CC_SAFE_DELETE(sprite);
@@ -25,7 +19,7 @@ CubeSprite* CubeSprite::create(const cocos2d::Vec3& pos_raw, const cocos2d::Colo
     return sprite;
 }
 
-bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& color)
+bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
 {
     if (!Node::init()) return false;
 
@@ -136,7 +130,6 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, const cocos2d::Color4B& colo
                                                (GLvoid*)offset);
         offset += meshattribute.attribSizeBytes;
     }
-    scheduleUpdate();
 
     return true;
 }
@@ -154,12 +147,4 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     _meshCommand->setDisplayColor(Vec4(color.r, color.g, color.b, color.a));
     renderer->addCommand(_meshCommand);
     Node::draw(renderer, transform, flags);
-}
-
-void CubeSprite::update(float dt){
-    if (_renderMesh){
-//        CCLOG("%x", _renderMesh);
-//        CCLOG("up>>>>>VBO %d", _renderMesh->getVertexBuffer());
-//        CCLOG("ref = %d", _renderMesh->getReferenceCount());
-    }
 }

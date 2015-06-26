@@ -7,12 +7,12 @@ USING_NS_CC;
 // 神圣不朽的单例实体，必须永远守护。
 EditState EditState::_instance;
 
-std::string EditState::getBasePath()
+std::string EditState::getBasePath() const
 {
     return FileUtils::getInstance()->getWritablePath() + "MicroCube"+ "/";
 }
 
-std::string EditState::getCubeMetaFilePath()
+std::string EditState::getCubeMetaFilePath() const
 {
     return getBasePath() + "metacubes.json";
 }
@@ -22,12 +22,25 @@ void EditState::setUnitName(const std::string& unitName)
     _unitName = unitName;
 }
 
-std::string EditState::getExtraUnitFilePath()
+std::string EditState::getExtraUnitFilePath() const
 {
     return getBasePath() + _unitName + ".cubex";
 }
 
-std::string EditState::getUnitFilePath()
+std::string EditState::getUnitFilePath() const
 {
     return getBasePath() + _unitName + ".cube";
+}
+
+void EditState::setDefaultVertexShader(const std::string& vsh)
+{
+    _defaultVertexShader = vsh;
+}
+void EditState::setDefaultFragmentShader(const std::string& fsh)
+{
+    _defaultFragmentShader = fsh;
+}
+std::unordered_map<int, MetaCube>* EditState::getMetaCubeMap()
+{
+    return &_metaCubeMap;
 }

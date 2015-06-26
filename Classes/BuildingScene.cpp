@@ -1,20 +1,25 @@
 // 湍流游戏
 
-#include "BuildingScene.h"
-#include "uiconf.h"
-#include "EditState.h"
-#include "format.h"
-#include "Msg.h"
+
+#include <cstdio>
+#include <vector>
+
 #include "../rapidjson/rapidjson.h"
 #include "../rapidjson/document.h"
 #include "../rapidjson/writer.h"
 #include "../rapidjson/stringbuffer.h"
 #include "../rapidjson/filereadstream.h"
 
-#include <cstdio>
-#include <vector>
-
 #include <sys/stat.h> //mkdir
+
+#include "BuildingScene.h"
+#include "uiconf.h"
+#include "EditState.h"
+#include "format.h"
+#include "Msg.h"
+#include "CubeSprite.h"
+#include "EditState.h"
+
 
 USING_NS_CC;
 
@@ -50,6 +55,9 @@ bool BuildingScene::init()
 
     this->addChild(StateInfoLayer::create());
 
+    _brushLayer = BrushLayer::create();
+    this->addChild(_brushLayer);
+
     reloadMetaCubes();
 
     return true;
@@ -59,7 +67,7 @@ void BuildingScene::reloadMetaCubes()
 {
 
     //clear old
-    _metaCubeMap.clear();
+    EditState::s()->getMetaCubeMap()->clear();
 
     FILE* fp = fopen(EditState::s()->getCubeMetaFilePath().c_str(), "r"); // TODO if Windows using "rb"
 
@@ -80,14 +88,18 @@ void BuildingScene::reloadMetaCubes()
     fclose(fp);
 
     // extract metacubes
+    // defaults
     assert(doc.HasMember("default_shader"));
     auto& defaultShader = doc["default_shader"];
     assert(defaultShader.Size() == 2);
     int shaderIndex = 0;
     for (auto iter = defaultShader.Begin(); iter != defaultShader.End(); iter++, shaderIndex++) {
-        _defauterShader[shaderIndex] = iter->GetString();
+        if (shaderIndex == 0) {
+            EditState::s()->setDefaultVertexShader(iter->GetString());
+        } else {
+            EditState::s()->setDefaultFragmentShader(iter->GetString());
+        }
     }
-    CCLOG("%s %s", _defauterShader[0].c_str(), _defauterShader[1].c_str());
     assert(doc.HasMember("list"));
     auto& list = doc["list"];
     auto getStr = [](const rjson::Value& obj, const char* key) {
@@ -138,10 +150,11 @@ void BuildingScene::reloadMetaCubes()
             metacube.unreal = unreal.GetInt() != 0;
         }
 
-        _metaCubeMap[metacube.id] = metacube;
+        (*(EditState::s()->getMetaCubeMap()))[metacube.id] = metacube;
     }
 
     //extract metacubes from file is done. Now we will display them.
+    _brushLayer->reload();
 }
 
 void BuildingScene::copyTemplateWorkspace()

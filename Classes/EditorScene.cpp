@@ -65,7 +65,7 @@ bool EditorScene::init()
     }
 
     // cube sprite
-    auto cubeSprite = CubeSprite::create(Vec3(0,0,0), Color4B::WHITE);
+    auto cubeSprite = CubeSprite::create(Vec3(0,0,0), 0);
     cubeSprite->setPosition3D({0,0,20});
     cubeSprite->setScale(2.f);
     _3dLayer->addChild(cubeSprite);
