@@ -13,15 +13,17 @@ CubeSprite* CubeSprite::create(const cocos2d::Vec3& pos_raw, int metaCubeId)
 
     if (sprite && sprite->init(pos_raw, metaCubeId)) {
         sprite->autorelease();
-    } else {
-        CC_SAFE_DELETE(sprite);
+        return sprite;
     }
-    return sprite;
+
+    CC_SAFE_DELETE(sprite);
+    return nullptr;
 }
 
 bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
 {
-    if (!Node::init()) return false;
+
+    assert(Node::init());
 
     _metaCubeId = metaCubeId;
     _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
@@ -31,6 +33,7 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
     _color = EditState::s()->getMetaCube(metaCubeId)->color;
     _renderMesh = metaCube->getRenderMesh();
     _texture = metaCube->getTexture();
+    _posRaw = pos_raw;
     
     return true;
 }
@@ -41,9 +44,11 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     _meshCommand = new MeshCommand();
     _meshCommand->genMaterialID(0, getGLProgramState(), _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), _blendFunc);
     _meshCommand->init(_globalZOrder, 0, getGLProgramState(), _blendFunc, _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), (GLenum)_renderMesh->getPrimitiveType(), (GLenum)_renderMesh->getIndexFormat(), _renderMesh->getIndexCount(), transform, flags);
+    
     _meshCommand->setCullFaceEnabled(true);
     _meshCommand->setDepthTestEnabled(true);
     _meshCommand->setTransparent(true);
+    _meshCommand->setDepthWriteEnabled(true); // must!
 
     Vec4 color = _color;
     // hacked。这里用color.a == 0来在fsh中判断是否是texture还是color，当texture时，咱们用color.r来传alpha值。
