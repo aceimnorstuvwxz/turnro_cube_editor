@@ -52,6 +52,16 @@ bool BrushLayer::init()
         }
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+
+    // 这个custommand的作用见draw()
+    /* 此方法无效
+    _customCommand.func = [](){
+        glDepthMask(GL_TRUE);
+        glClearDepth(1.0);
+        glClear(GL_DEPTH_BUFFER_BIT);
+    };*/
+    
     return true;
 }
 
@@ -110,5 +120,14 @@ void BrushLayer::hideOrShowAllMetaCubes()
             iter->second->runAction(FadeOut::create(0.33f));
         }
     }
+}
+
+void BrushLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
+{
+    // 为了让此Layer不与其他Layer的内部模型之间进行深度测试（在合理安排Layer的先后addChild次序的情况下，能够保证本Layer之内的元素始终在其它之上）
+
+    // 发送一个 RenderCommand，它execute时，执行glClear(GL_DEPTH_BUFFER_BIT)
+    // 因为renderCommad会sort而无效。
+//    renderer->addCommand(&_customCommand);
 }
 

@@ -34,6 +34,7 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
     _renderMesh = metaCube->getRenderMesh();
     _texture = metaCube->getTexture();
     _posRaw = pos_raw;
+
     
     return true;
 }

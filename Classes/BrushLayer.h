@@ -29,7 +29,9 @@ private:
     bool _isCubesVisible = false;
     void hideOrShowAllMetaCubes();
 
+    cocos2d::CustomCommand _customCommand;
 
+    void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags) override;
 };
 
 #endif /* defined(__cube3d__BrushLayer__) */

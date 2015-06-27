@@ -20,7 +20,6 @@
 #include "CubeSprite.h"
 #include "EditState.h"
 
-
 USING_NS_CC;
 
 class StateInfoLayer: public McdLayer
@@ -49,20 +48,22 @@ private:
 };
 
 
+
+
 bool BuildingScene::init()
 {
     assert(TRBaseScene::init());
 
     this->addChild(StateInfoLayer::create());
 
-    _brushLayer = BrushLayer::create();
+    initSceneLayer(); // Must before BrushLayer, make it always draw later. (zOrder is not working...)
+
+    _brushLayer = BrushLayer::create(); // Must before reloadMetaCubes()
     this->addChild(_brushLayer);
 
     reloadMetaCubes();
 
     initMenuButtons();
-
-    initSceneLayer();
 
     scheduleUpdate();
 
@@ -204,7 +205,7 @@ void BuildingScene::copyTemplateWorkspace()
 
 void BuildingScene::initMenuButtons()
 {
-    addCommonBtn({0.1f,0.9f}, Msg::s()["unreal_bottom"], [this](){ addUnrealWall(UY, 2);
+    addCommonBtn({0.1f,0.9f}, Msg::s()["unreal_bottom"], [this](){ addUnrealWall(UY, 30);
     });
 }
 
@@ -386,7 +387,7 @@ void BuildingScene::initSceneLayer()
 
 cocos2d::Vec3 BuildingScene::rawPos2Real(cocos2d::Vec3 raw)
 {
-    return 15.f*raw;
+    return 10.f*raw;
 }
 
 void BuildingScene::addCube(CubeSprite* cube)
