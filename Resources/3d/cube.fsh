@@ -13,7 +13,7 @@ void main()
 {
     float x = v_texCoord.x;
     if (u_color.a == 0.0) {
-        gl_FragColor = texture2D(u_texture, v_texCoord);
+        gl_FragColor = texture2D(u_texture, v_texCoord) * vec4(1,1,1,u_color.r);
     } else {
         gl_FragColor = u_color;
     }

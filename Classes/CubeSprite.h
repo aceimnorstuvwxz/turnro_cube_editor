@@ -15,6 +15,7 @@ public:
     virtual void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags) override;
 
     cocos2d::Vec3 getRawPos(){ return _posRaw; }
+    int getMetaCubeId(){return _metaCubeId; }
 
 protected:
     //data

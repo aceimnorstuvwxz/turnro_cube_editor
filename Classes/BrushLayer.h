@@ -20,6 +20,11 @@ public:
 private:
 
     std::unordered_map<int, CubeSprite*> _cubeMap;
+    CubeSprite* _selectedCube = nullptr;
+    void setNewSelectedCube(int metaCubeId);
+    cocos2d::Camera* _camera;
+    bool _isCubesVisible = false;
+    void hideOrShowAllMetaCubes();
 
 };
 
