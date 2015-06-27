@@ -44,7 +44,7 @@ ui::Button* TRBaseScene::addCommonBtn(const Vec2& pos, const std::string& text, 
     assert(callback != nullptr);
     int tag = _btnAI++;
     _cbMap[tag] = callback;
-    return _defaultLayer->decorateButtonEx({"images/common_btn_bg.png", pos, 1.f, text},
+    return _defaultLayer->decorateButtonEx({"images/common_btn_bg.png", pos, .6f, text},
                                     [this,tag](){this->_cbMap[tag]();});
 }
 

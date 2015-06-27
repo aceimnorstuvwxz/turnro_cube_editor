@@ -60,6 +60,10 @@ bool BuildingScene::init()
 
     reloadMetaCubes();
 
+    initMenuButtons();
+
+    initSceneLayer();
+
     return true;
 }
 
@@ -196,3 +200,70 @@ void BuildingScene::copyTemplateWorkspace()
 
 }
 
+void BuildingScene::initMenuButtons()
+{
+    addCommonBtn({0.1f,0.9f}, Msg::s()["unreal_bottom"], [this](){ addUnrealWall(UY, 100); });
+}
+
+void BuildingScene::initSceneLayer()
+{
+    _sceneLayer = Layer::create();
+    this->addChild(_sceneLayer);
+
+    auto size = Director::getInstance()->getVisibleSize();
+
+    _sceneCamera = Camera::createPerspective(60, size.width/size.height, 1, 1000);
+    _sceneCamera->setPosition3D({0, 0, 500});
+    _sceneCamera->lookAt({0,0,0});
+    _sceneCamera->setCameraFlag(CameraFlag::USER2);
+    _sceneLayer->addChild(_sceneCamera);
+    _sceneLayer->setCameraMask(_sceneCamera->getCameraMask());
+}
+
+cocos2d::Vec3 BuildingScene::rawPos2Real(cocos2d::Vec3 rawPos)
+{
+    return 10.f*rawPos;
+}
+
+void BuildingScene::addCube(CubeSprite* cube)
+{
+    assert(cube);
+
+    // Add to HashTable
+    _cubeMap[cube->getRawPos()] = cube;
+
+    // Add to Scene
+    _sceneLayer->addChild(cube);
+    cube->setPosition3D(rawPos2Real(cube->getRawPos()));
+}
+
+void BuildingScene::removeCube(CubeSprite* cube)
+{
+    assert(cube);
+
+}
+
+
+void BuildingScene::addUnrealWall(UnrealType t, int width)
+{
+    assert(width >= 0);
+    for (int i = 0-width/2; i < width/2; i++) {
+        for (int j = 0-width/2; j < width/2; j++) {
+            Vec3 rawPos = {0,0,0};
+            switch (t) {
+                case UX:
+                rawPos = Vec3{0, 1.0f*i, 1.0f*j};
+                break;
+
+                case UY:
+                rawPos = Vec3{1.f*i, 0 ,1.f*j};
+                break;
+
+                case UZ:
+                rawPos = Vec3{1.f*i, 1.f*j, 0};
+                break;
+            }
+            addCube(CubeSprite::create(rawPos, _brushLayer->getSelectedCubeId()));
+        }
+    }
+}

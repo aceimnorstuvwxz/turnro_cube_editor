@@ -57,7 +57,7 @@ ui::Button* McdLayer::decorateButtonEx(const Btn_info& btnInfo, BTN_CALLBACK cal
     button->setScale(btnInfo.scale);
     button->setTitleText(btnInfo.text);
     button->setTitleFontName(uic::font_zh);
-    button->setTitleFontSize(30);
+    button->setTitleFontSize(20);
     this->addChild(button, 1);
     _cbMap[mytag] = callback;
     return button;

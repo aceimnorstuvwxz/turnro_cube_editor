@@ -19,7 +19,6 @@ public:
 
 protected:
     //data
-    float _cubeLength;
     cocos2d::Vec3 _posRaw;
     int _metaCubeId;
     cocos2d::Vec4 _color;
@@ -30,7 +29,6 @@ protected:
     
     //data init, actually not necessary.
     CubeSprite():
-    _cubeLength(10),
     _posRaw(0,0,0),
     _renderMesh(nullptr),
     _meshCommand(nullptr)

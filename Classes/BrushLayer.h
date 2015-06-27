@@ -17,10 +17,13 @@ public:
     CREATE_FUNC(BrushLayer);
 
     void reload();
+    int getSelectedCubeId(){return _selectedMetaCubeId;}
+
 private:
 
     std::unordered_map<int, CubeSprite*> _cubeMap;
     CubeSprite* _selectedCube = nullptr;
+    int _selectedMetaCubeId;
     void setNewSelectedCube(int metaCubeId);
     cocos2d::Camera* _camera;
     bool _isCubesVisible = false;

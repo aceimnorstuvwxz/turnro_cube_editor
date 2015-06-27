@@ -37,15 +37,17 @@ bool BrushLayer::init()
                 hideOrShowAllMetaCubes();
             }
         }
-        for (auto iter = _cubeMap.begin(); iter != _cubeMap.end(); iter++) {
-            CubeSprite* sp =  iter->second;
-            auto spos = _camera->project(sp->getPosition3D());
-            auto dis = mousePos - spos;
-            if (dis.length() < clickScope) {
-                CCLOG("click cube %d", sp->getMetaCubeId());
-                setNewSelectedCube(iter->second->getMetaCubeId());
-                _isCubesVisible = false;
-                hideOrShowAllMetaCubes();
+        if (_isCubesVisible) {
+            for (auto iter = _cubeMap.begin(); iter != _cubeMap.end(); iter++) {
+                CubeSprite* sp =  iter->second;
+                auto spos = _camera->project(sp->getPosition3D());
+                auto dis = mousePos - spos;
+                if (dis.length() < clickScope) {
+                    CCLOG("click cube %d", sp->getMetaCubeId());
+                    setNewSelectedCube(iter->second->getMetaCubeId());
+                    _isCubesVisible = false;
+                    hideOrShowAllMetaCubes();
+                }
             }
         }
     };
@@ -96,6 +98,7 @@ void BrushLayer::setNewSelectedCube(int metaCubeId)
     _selectedCube->setCameraMask(this->getCameraMask());
     this->addChild(_selectedCube);
     _selectedCube->runAction(RepeatForever::create(RotateBy::create(2.f, {0,360,0})));
+    _selectedMetaCubeId = metaCubeId;
 }
 
 void BrushLayer::hideOrShowAllMetaCubes()
