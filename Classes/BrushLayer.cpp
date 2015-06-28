@@ -15,8 +15,9 @@ bool BrushLayer::init()
     // todo use orthographic camera
     //    auto _camera = Camera::createOrthographic(size.width/2, size.height/2, 1, 1000);
 
-    _camera = Camera::createPerspective(60, size.width/size.height, 1, 1000);
-    _camera->setPosition3D({0, 0, 150});
+    _camera = Camera::createPerspective(60, size.width/size.height, 1, 200);
+    // 实体CUBE放在Z=0处，为了保持在scene内尽量不被遮挡，camera必须离这些cube很近。
+    _camera->setPosition3D({0, 0, 20});
     _camera->lookAt({0,0,0});
     _camera->setCameraFlag(CameraFlag::USER1);
     this->addChild(_camera);
@@ -28,26 +29,13 @@ bool BrushLayer::init()
         const float clickScope = 20;
         EventMouse* e = (EventMouse*)event;
         auto mousePos = Vec2{e->getLocationInView().x, 0.f - e->getLocationInView().y};
-        if (_selectedCube) {
-            auto spos = _camera->project(_selectedCube->getPosition3D());
-            auto dis = mousePos -  spos;
+        for (auto iter = _cubeMap.begin(); iter != _cubeMap.end(); iter++) {
+            CubeSprite* sp =  iter->second;
+            auto spos = _camera->project(sp->getPosition3D());
+            auto dis = mousePos - spos;
             if (dis.length() < clickScope) {
-                CCLOG("click _selected cube");
-                _isCubesVisible = !_isCubesVisible;
-                hideOrShowAllMetaCubes();
-            }
-        }
-        if (_isCubesVisible) {
-            for (auto iter = _cubeMap.begin(); iter != _cubeMap.end(); iter++) {
-                CubeSprite* sp =  iter->second;
-                auto spos = _camera->project(sp->getPosition3D());
-                auto dis = mousePos - spos;
-                if (dis.length() < clickScope) {
-                    CCLOG("click cube %d", sp->getMetaCubeId());
-                    setNewSelectedCube(iter->second->getMetaCubeId());
-                    _isCubesVisible = false;
-                    hideOrShowAllMetaCubes();
-                }
+                CCLOG("click cube %d", sp->getMetaCubeId());
+                setNewSelectedCube(iter->second->getMetaCubeId());
             }
         }
     };
@@ -72,6 +60,10 @@ bool BrushLayer::init()
     return true;
 }
 
+
+static const float SCALE = 0.1f;
+static const float PY = -15*7;
+static const float SCP_X = 20;
 void BrushLayer::reload()
 {
     // clear
@@ -86,47 +78,23 @@ void BrushLayer::reload()
     int tmpIndex = 0;
     for (auto iter = metaMap->begin(); iter != metaMap->end(); iter++, tmpIndex++) {
         auto sp = CubeSprite::create({0,0,0}, iter->second.id);
-        float scp =15;
-        sp->setPosition3D({0.f - 2 * scp + tmpIndex%5 * scp, 0-3*scp + tmpIndex/5 * scp, 0});
+        sp->setPosition3D(SCALE * Vec3{0.f - metaMap->size()/2 * SCP_X + tmpIndex * SCP_X, PY, 0});
         sp->setCameraMask(this->getCameraMask());
+        sp->setScale(SCALE);
         this->addChild(sp);
         _cubeMap[iter->second.id] = sp;
-        sp->runAction(RepeatForever::create(RotateBy::create(2.f, {0,360,0})));
-        sp->runAction(FadeOut::create(0.33));
-
-        //first one as selected
-        if (tmpIndex == 0) {
-            setNewSelectedCube(iter->second.id);
-        }
     }
+    // 0是必有的metacube
+    setNewSelectedCube(0);
 }
 
 void BrushLayer::setNewSelectedCube(int metaCubeId)
 {
-    //clear
-    if (_selectedCube) {
-        this->removeChild(_selectedCube);
-        _selectedCube = nullptr;
-    }
-    //load
-    float scp =15;
-    _selectedCube = CubeSprite::create({0,0,0}, metaCubeId);
-    _selectedCube->setPosition3D({0.f, 0-4*scp, 0});
-    _selectedCube->setCameraMask(this->getCameraMask());
-    this->addChild(_selectedCube);
-    _selectedCube->runAction(RepeatForever::create(RotateBy::create(2.f, {0,360,0})));
+    CubeSprite* lastSelected = _cubeMap[_selectedMetaCubeId];
+    lastSelected->stopAllActions();
+    CubeSprite* nowSelected = _cubeMap[metaCubeId];
+    nowSelected->runAction(RepeatForever::create(RotateBy::create(2.f, {0,360,0})));
     _selectedMetaCubeId = metaCubeId;
-}
-
-void BrushLayer::hideOrShowAllMetaCubes()
-{
-    for (auto iter = _cubeMap.begin(); iter != _cubeMap.end(); iter++) {
-        if (_isCubesVisible) {
-            iter->second->runAction(FadeIn::create(0.33f));
-        } else {
-            iter->second->runAction(FadeOut::create(0.33f));
-        }
-    }
 }
 
 void BrushLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)

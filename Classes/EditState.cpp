@@ -42,7 +42,7 @@ void EditState::setDefaultFragmentShader(const std::string& fsh)
 {
     _defaultFragmentShader = fsh;
 }
-std::unordered_map<int, MetaCube>* EditState::getMetaCubeMap()
+std::map<int, MetaCube>* EditState::getMetaCubeMap()
 {
     return &_metaCubeMap;
 }

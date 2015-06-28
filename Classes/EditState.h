@@ -6,6 +6,7 @@
 // 暗黑编辑器核心状态搜集器
 #include "cocos2d.h"
 #include <string>
+#include <map>
 #include "MetaCube.h"
 
 class EditState
@@ -23,7 +24,7 @@ public:
 
     void setDefaultVertexShader(const std::string& vsh);
     void setDefaultFragmentShader(const std::string& fsh);
-    std::unordered_map<int, MetaCube>* getMetaCubeMap();
+    std::map<int, MetaCube>* getMetaCubeMap();
     MetaCube* getMetaCube(int id);
 private:
     EditState(){};
@@ -33,7 +34,8 @@ private:
 
     std::string _defaultVertexShader;
     std::string _defaultFragmentShader;
-    std::unordered_map<int, MetaCube> _metaCubeMap;
+    // map,使id遍历有序。
+    std::map<int, MetaCube> _metaCubeMap;
 };
 
 #endif /* defined(__cube3d__EditState__) */

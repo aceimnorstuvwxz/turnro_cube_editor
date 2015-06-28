@@ -32,12 +32,21 @@ public:
     cocos2d::GLProgramState* getProgramState();
     cocos2d::Mesh* getRenderMesh();
     cocos2d::Texture2D* getTexture();
+    cocos2d::Primitive* getEdgePrimitive();
+    cocos2d::GLProgramState* getEdgeProgramState();
 
 private:
     cocos2d::GLProgramState* _programState = nullptr;
     cocos2d::Mesh* _renderMesh = nullptr;
     cocos2d::Texture2D* _texture = nullptr;
     float _cubeLength = 10;
+
+    // for draw cube edge
+    cocos2d::GLProgramState* _edgeProgramState = nullptr;
+    cocos2d::Primitive* _edgePrimitive = nullptr;
+    cocos2d::VertexData* _edgeVertexData = nullptr;
+    cocos2d::IndexBuffer* _edgeIndexBuffer = nullptr;
+    cocos2d::VertexBuffer* _edgeVertexBuffer = nullptr;
 };
 
 #endif /* defined(__cube3d__MetaCube__) */

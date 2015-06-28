@@ -21,22 +21,21 @@ public:
 
 protected:
     //data
-    cocos2d::Vec3 _posRaw;
-    int _metaCubeId;
+    cocos2d::Vec3 _posRaw = {0,0,0};
+    int _metaCubeId = 0;
     cocos2d::Vec4 _color;
-    cocos2d::Mesh* _renderMesh;
-    cocos2d::MeshCommand* _meshCommand;
+    cocos2d::Mesh* _renderMesh = nullptr;
+    cocos2d::MeshCommand* _meshCommand = nullptr;
+    cocos2d::PrimitiveCommand* _edgePrimitiveCommand = nullptr;
     cocos2d::BlendFunc _blendFunc;
     cocos2d::Texture2D* _texture;
+    cocos2d::GLProgramState* _edgeGlProgramState = nullptr;
+    cocos2d::Primitive* _edgePrimitive = nullptr;
+
 
     bool _selected = false;
-    
-    //data init, actually not necessary.
-    CubeSprite():
-    _posRaw(0,0,0),
-    _renderMesh(nullptr),
-    _meshCommand(nullptr)
-    {};
+
+    CubeSprite(){};
 
 //    virtual void update(float dt) override;
 };

@@ -34,7 +34,8 @@ bool CubeSprite::init(const cocos2d::Vec3& pos_raw, int metaCubeId)
     _renderMesh = metaCube->getRenderMesh();
     _texture = metaCube->getTexture();
     _posRaw = pos_raw;
-
+    _edgePrimitive = metaCube->getEdgePrimitive();
+    _edgeGlProgramState = metaCube->getEdgeProgramState();
     
     return true;
 }
@@ -43,7 +44,7 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
 {
     CC_SAFE_DELETE(_meshCommand);
     _meshCommand = new MeshCommand();
-    _meshCommand->genMaterialID(0, getGLProgramState(), _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), _blendFunc);
+//    _meshCommand->genMaterialID(0, getGLProgramState(), _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), _blendFunc);
     _meshCommand->init(_globalZOrder, 0, getGLProgramState(), _blendFunc, _renderMesh->getVertexBuffer(), _renderMesh->getIndexBuffer(), (GLenum)_renderMesh->getPrimitiveType(), (GLenum)_renderMesh->getIndexFormat(), _renderMesh->getIndexCount(), transform, flags);
     
     _meshCommand->setCullFaceEnabled(true);
@@ -71,5 +72,14 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     }
     _meshCommand->setDisplayColor(color);
     renderer->addCommand(_meshCommand);
+
+    //edge
+    CC_SAFE_DELETE( _edgePrimitiveCommand);
+    _edgePrimitiveCommand = new PrimitiveCommand();
+    _edgePrimitiveCommand->init(_globalZOrder, 0, _edgeGlProgramState, _blendFunc, _edgePrimitive, transform, flags);
+
+    _edgePrimitiveCommand->setTransparent(true);
+    renderer->addCommand(_edgePrimitiveCommand);
+
     Node::draw(renderer, transform, flags);
 }
