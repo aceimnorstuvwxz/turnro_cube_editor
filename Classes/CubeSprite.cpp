@@ -52,12 +52,22 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     _meshCommand->setDepthWriteEnabled(true); // must!
 
     Vec4 color = _color;
+
+    // 在选择时，统一反色。
+    // 妄图通过uniform来控制inverse来表示选中，而实际上由于GLProgram的公用，且此处的设置并不在时间上只作用于本CUBE的绘制，所以无效。
+    // getGLProgramState()->setUniformInt("u_inverse", _selected ? 1 : 0);
     // hacked。这里用color.a == 0来在fsh中判断是否是texture还是color，当texture时，咱们用color.r来传alpha值。
     if (_texture){
         getGLProgramState()->setUniformTexture("u_texture", _texture);
-        color.x = getOpacity() * 1.f / 256.f * (_selected ? 0.5f : 1.f);
+        // 用W位来告诉shader是否用texture.
+        color.w = 0;
+        color.x = getOpacity() * 1.f / 256.f;
+        // 通过y位来向shader传递是否选中的消息。
+        color.y = _selected ? 1.f : 0.f;
     } else {
-        color.w = color.w * (getOpacity() * 1.f / 256.f) * (_selected ? 0.5f : 1.f);
+        // 选中时反转颜色（只对存色的cube有效)
+        if (_selected) color = Vec4{1.f - color.x, 1.f - color.y, 1.f - color.z, color.w};
+        color.w = color.w * (getOpacity() * 1.f / 256.f);
     }
     _meshCommand->setDisplayColor(color);
     renderer->addCommand(_meshCommand);

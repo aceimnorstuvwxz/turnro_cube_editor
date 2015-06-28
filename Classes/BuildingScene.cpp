@@ -374,23 +374,24 @@ void BuildingScene::initSceneLayer()
     auto _mouseListener = EventListenerMouse::create();
 
     _mouseListener->onMouseMove = [&](Event *event){
-        if (!_isFPS) return;
-
         EventMouse* e = (EventMouse*)event;
-        auto now = e->getLocation();
-        Vec2 diff = now - _fpsAnchor;
-        _fpsAnchor = now;
-        _rotateY -= ROTATE_SCALE*diff.x;
-        _rotateX -= ROTATE_SCALE*diff.y;
-        if (_rotateX > UP_DOWN_MAX*0.5f*PI) _rotateX = UP_DOWN_MAX*0.5f*PI;
-        if (_rotateX < -UP_DOWN_MAX*0.5f*PI) _rotateX = -UP_DOWN_MAX*0.5f*PI;
-
+        if (_isFPS){
+            auto now = e->getLocation();
+            Vec2 diff = now - _fpsAnchor;
+            _fpsAnchor = now;
+            _rotateY -= ROTATE_SCALE*diff.x;
+            _rotateX -= ROTATE_SCALE*diff.y;
+            if (_rotateX > UP_DOWN_MAX*0.5f*PI) _rotateX = UP_DOWN_MAX*0.5f*PI;
+            if (_rotateX < -UP_DOWN_MAX*0.5f*PI) _rotateX = -UP_DOWN_MAX*0.5f*PI;
+        } else {
+            // 在右键松开时（不再通过鼠标改变镜头方向时），显示鼠标选择（与准星选择的表现）。
+            showMouseSelection(e->getLocationInView());
+        }
     };
     _mouseListener->onMouseUp = [&](Event *event){
         EventMouse* e = (EventMouse*)event;
         switch(e->getMouseButton()){
             case MOUSE_BUTTON_LEFT:
-                addAnCubeAlignSelectedFace();
                 break;
 
             case MOUSE_BUTTON_RIGHT:
@@ -405,7 +406,8 @@ void BuildingScene::initSceneLayer()
         EventMouse* e = (EventMouse*)event;
         switch(e->getMouseButton()){
             case MOUSE_BUTTON_LEFT:
-            break;
+                addAndCubeByMouseCursor(e->getLocationInView());
+                break;
 
             case MOUSE_BUTTON_RIGHT:
             {
@@ -573,10 +575,11 @@ inline bool intersectionQuad(const Vec3& a, const Vec3& b, const Vec3& c, const 
     return false;
 }
 
-CubeSprite* BuildingScene::getIntersection(int* face)
+CubeSprite* BuildingScene::getIntersection(const Vec3& origin2, const Vec3& dir, int* face)
 {
-    Vec3 dir = _sceneCamera->getRotationQuat() * Vec3{0.f,0.f,-1.f};
-    Vec3 origin = _sceneCamera->getPosition3D() * (1.f / EditState::CUBE_WIDTH); // 这样就不用转换rawPos了。
+//    Vec3 dir = _sceneCamera->getRotationQuat() * Vec3{0.f,0.f,-1.f};
+//    Vec3 origin = _sceneCamera->getPosition3D() * (1.f / EditState::CUBE_WIDTH); // 这样就不用转换rawPos了。
+    Vec3 origin = origin2 * (1.f/EditState::CUBE_WIDTH);
     float distMin = std::numeric_limits<float>::max();
     CubeSprite* retCube = nullptr;
     int retFace = 0;
@@ -645,7 +648,9 @@ CubeSprite* BuildingScene::getIntersection(int* face)
 
 void BuildingScene::calcIntersection()
 {
-    CubeSprite* cp = getIntersection(&_lastSelectedFace);
+    Vec3 dir = _sceneCamera->getRotationQuat() * Vec3{0.f,0.f,-1.f};
+
+    CubeSprite* cp = getIntersection(_sceneCamera->getPosition3D(), dir, &_lastSelectedFace);
     if (cp ==_lastSelected) return;
     if (_lastSelected) _lastSelected->unselect();
     _lastSelected = nullptr;
@@ -657,19 +662,23 @@ void BuildingScene::calcIntersection()
     }
 }
 
+void BuildingScene::addCubeBySelectInter(const cocos2d::Vec3& alignRawPos, int face)
+{
+    Vec3 toadd = face == FXP ? Vec3{1.f,0.f,0.f} :
+    face == FXN ? Vec3{-1.f,0.f,0.f} :
+    face == FYP ? Vec3{0.f,1.f,0.f} :
+    face == FYN ? Vec3{0.f,-1.f,0.f} :
+    face == FZP ? Vec3{0.f,0.f,1.f} : Vec3{0.f,0.f,-1.f};
+    auto newCube = CubeSprite::create(alignRawPos + toadd, _brushLayer->getSelectedCubeId());
+    addCube(newCube);
+}
 void BuildingScene::addAnCubeAlignSelectedFace()
 {
     CCLOG("add cube align selected face");
     if (_lastSelected == nullptr) return;
 
     Vec3 pos = _lastSelected->getRawPos();
-    Vec3 toadd = _lastSelectedFace == FXP ? Vec3{1.f,0.f,0.f} :
-    _lastSelectedFace == FXN ? Vec3{-1.f,0.f,0.f} :
-    _lastSelectedFace == FYP ? Vec3{0.f,1.f,0.f} :
-    _lastSelectedFace == FYN ? Vec3{0.f,-1.f,0.f} :
-    _lastSelectedFace == FZP ? Vec3{0.f,0.f,1.f} : Vec3{0.f,0.f,-1.f};
-    auto newCube = CubeSprite::create(pos + toadd, _brushLayer->getSelectedCubeId());
-    addCube(newCube);
+    addCubeBySelectInter(pos, _lastSelectedFace);
 }
 
 void BuildingScene::deleteTheSelectedCube()
@@ -684,3 +693,34 @@ void BuildingScene::deleteTheSelectedCube()
     _lastSelected = nullptr;
 
 }
+
+void BuildingScene::addAndCubeByMouseCursor(const cocos2d::Vec2& cursor)
+{
+    CCLOG("add cube by mouse cursor");
+    int face;
+    CubeSprite* cp = getMouseSelection(cursor, &face);
+    if (cp) {
+        addCubeBySelectInter(cp->getRawPos(), face);
+    }
+}
+
+void BuildingScene::showMouseSelection(const cocos2d::Vec2& cursor)
+{
+    CubeSprite* cp = getMouseSelection(cursor, nullptr);
+    if (_lastMouseSelected == cp) return;
+    if (_lastMouseSelected && _lastSelected != _lastMouseSelected) _lastMouseSelected->unselect();
+    if (cp) cp->select();
+    _lastMouseSelected = cp;
+}
+
+CubeSprite* BuildingScene::getMouseSelection(const cocos2d::Vec2& cursor, int* face)
+{
+    Vec3 dest = _sceneCamera->unproject(Vec3{cursor.x, -cursor.y, 100});
+    Vec3 src = _sceneCamera->getPosition3D();
+    Vec3 dir = src - dest;
+    dir.normalize();
+    CubeSprite* cp = getIntersection(src, dir, face);
+    return cp;
+}
+
+

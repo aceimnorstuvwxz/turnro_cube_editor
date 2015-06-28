@@ -107,11 +107,16 @@ private:
 
     // 找到选择的cube
     void calcIntersection();
-    CubeSprite* getIntersection(int* face);
+    CubeSprite* getIntersection(const cocos2d::Vec3& origin, const cocos2d::Vec3& dir, int* face);
     CubeSprite* _lastSelected = nullptr;
     int _lastSelectedFace = 0;
     void addAnCubeAlignSelectedFace();
     void deleteTheSelectedCube();
+    void addAndCubeByMouseCursor(const cocos2d::Vec2& cursor);
+    void addCubeBySelectInter(const cocos2d::Vec3& alignRawPos, int face);
+    CubeSprite* _lastMouseSelected = nullptr;
+    void showMouseSelection(const cocos2d::Vec2& cursor);
+    CubeSprite* getMouseSelection(const cocos2d::Vec2& cursor, int* face);
 };
 
 #endif /* defined(__cube3d__BuildingScene__) */
