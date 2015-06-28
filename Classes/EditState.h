@@ -11,6 +11,7 @@
 class EditState
 {
 public:
+    static const float CUBE_WIDTH;
     static EditState* s(){ return &_instance; };
 
     std::string getBasePath() const;

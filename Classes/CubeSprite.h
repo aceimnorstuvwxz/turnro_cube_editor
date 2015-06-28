@@ -16,6 +16,8 @@ public:
 
     cocos2d::Vec3 getRawPos(){ return _posRaw; }
     int getMetaCubeId(){return _metaCubeId; }
+    void select() { _selected = true; }
+    void unselect() { _selected = false; }
 
 protected:
     //data
@@ -26,6 +28,8 @@ protected:
     cocos2d::MeshCommand* _meshCommand;
     cocos2d::BlendFunc _blendFunc;
     cocos2d::Texture2D* _texture;
+
+    bool _selected = false;
     
     //data init, actually not necessary.
     CubeSprite():

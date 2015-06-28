@@ -6,6 +6,8 @@
 USING_NS_CC;
 // 神圣不朽的单例实体，必须永远守护。
 EditState EditState::_instance;
+// 永恒的个体宽度，不变。
+const float EditState::CUBE_WIDTH = 10.f;
 
 std::string EditState::getBasePath() const
 {

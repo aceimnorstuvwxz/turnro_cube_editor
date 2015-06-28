@@ -61,7 +61,14 @@ bool BrushLayer::init()
         glClearDepth(1.0);
         glClear(GL_DEPTH_BUFFER_BIT);
     };*/
-    
+
+    // 准心
+    auto draw = DrawNode::create();
+    this->addChild(draw);
+
+    Vec2 center = {size.width/2, size.height/2};
+    draw->drawLine(center-Vec2{20,0}, center+Vec2{20,0}, {0,1.0,0,0.5});
+    draw->drawLine(center-Vec2{0,20}, center+Vec2{0,20}, {0,1.0,0,0.5});
     return true;
 }
 

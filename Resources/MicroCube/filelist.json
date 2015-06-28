@@ -10,6 +10,7 @@
      "metacubes.json",
      "shaders/default.fsh",
      "shaders/default.vsh",
-     "textures/leopard.png"
+     "textures/leopard.png",
+     "textures/unreal0.png"
     ]
 }

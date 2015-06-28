@@ -20,6 +20,8 @@
 #include "CubeSprite.h"
 #include "EditState.h"
 
+#include "intersection.h"
+
 USING_NS_CC;
 
 class StateInfoLayer: public McdLayer
@@ -231,19 +233,19 @@ void BuildingScene::initSceneLayer()
         switch (code) {
             case EventKeyboard::KeyCode::KEY_SPACE:
             CCLOG("key space, shot");
-            //TODO
+            addAnCubeAlignSelectedFace();
             break;
 
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
             CCLOG("key W down");
-            _zoomIn = true;
+            _front = true;
             break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
             CCLOG("key S down");
-            _zoomOut = true;
+            _back = true;
             break;
 
             case EventKeyboard::KeyCode::KEY_A:
@@ -261,14 +263,40 @@ void BuildingScene::initSceneLayer()
             case EventKeyboard::KeyCode::KEY_Q:
             case EventKeyboard::KeyCode::KEY_CAPITAL_Q:
             CCLOG("key Q down");
-            _up = true;
+            _down = true;
             break;
 
             case EventKeyboard::KeyCode::KEY_E:
             case EventKeyboard::KeyCode::KEY_CAPITAL_E:
             CCLOG("key E down");
-            _down = true;
+            _up = true;
             break;
+
+            case EventKeyboard::KeyCode::KEY_C:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_C:
+                CCLOG("key C down");
+                deleteTheSelectedCube();
+                break;
+
+            case EventKeyboard::KeyCode::KEY_UP_ARROW:
+                CCLOG("key arrow up");
+                _rotateUp = true;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+                CCLOG("key arrow down");
+                _rotateDown = true;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+                CCLOG("key arrow left");
+                _rotateLeft = true;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+                CCLOG("key arrow right");
+                _rotateRight = true;
+                break;
 
             default:
             break;
@@ -277,20 +305,19 @@ void BuildingScene::initSceneLayer()
     _keyboardListener->onKeyReleased = [&](EventKeyboard::KeyCode code, Event* event){
         switch (code) {
             case EventKeyboard::KeyCode::KEY_SPACE:
-            CCLOG("key space, shot");
-            //TODO
-            break;
+                CCLOG("key space, shot");
+                break;
 
             case EventKeyboard::KeyCode::KEY_W:
             case EventKeyboard::KeyCode::KEY_CAPITAL_W:
             CCLOG("key W up");
-            _zoomIn = false;
+            _front = false;
             break;
 
             case EventKeyboard::KeyCode::KEY_S:
             case EventKeyboard::KeyCode::KEY_CAPITAL_S:
             CCLOG("key S up");
-            _zoomOut = false;
+            _back = false;
             break;
 
             case EventKeyboard::KeyCode::KEY_A:
@@ -307,14 +334,34 @@ void BuildingScene::initSceneLayer()
             case EventKeyboard::KeyCode::KEY_Q:
             case EventKeyboard::KeyCode::KEY_CAPITAL_Q:
             CCLOG("key Q up");
-            _up = false;
+            _down = false;
             break;
 
             case EventKeyboard::KeyCode::KEY_E:
             case EventKeyboard::KeyCode::KEY_CAPITAL_E:
             CCLOG("key E up");
-            _down = false;
+            _up = false;
             break;
+
+            case EventKeyboard::KeyCode::KEY_UP_ARROW:
+                CCLOG("key arrow up");
+                _rotateUp = false;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+                CCLOG("key arrow down");
+                _rotateDown = false;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+                CCLOG("key arrow left");
+                _rotateLeft = false;
+                break;
+
+            case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+                CCLOG("key arrow right");
+                _rotateRight = false;
+                break;
 
             default:
             break;
@@ -343,14 +390,15 @@ void BuildingScene::initSceneLayer()
         EventMouse* e = (EventMouse*)event;
         switch(e->getMouseButton()){
             case MOUSE_BUTTON_LEFT:
-            break;
+                addAnCubeAlignSelectedFace();
+                break;
 
             case MOUSE_BUTTON_RIGHT:
-            _isFPS = false;
-            break;
+                _isFPS = false;
+                break;
 
             default:
-            break;
+                break;
         }
     };
     _mouseListener->onMouseDown = [&](Event *event){
@@ -364,23 +412,19 @@ void BuildingScene::initSceneLayer()
                 _isFPS = true;
                 _fpsAnchor = e->getLocation();
                 auto ro = _sceneCamera->getRotation3D();
-                CCLOG("%f,%f,%f", ro.x, ro.y, ro.z);
                 break;
             }
             default:
             break;
         }
     };
-    /*
     _mouseListener->onMouseScroll = [&](Event *event){
         EventMouse* e = (EventMouse*)event;
-        CCLOG("%f, %f", e->getScrollX(), e->getScrollY());
         float diff = e->getScrollY();
         Vec3 dir = _sceneCamera->getRotationQuat() * Vec3{0.f, 0.f, -1.f};
         dir.normalize();
         _sceneCamera->setPosition3D(_sceneCamera->getPosition3D() + SCALL_MOVE_SCALE * -diff * dir);
     };
-     */
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
 
 }
@@ -407,6 +451,14 @@ void BuildingScene::addCube(CubeSprite* cube)
 void BuildingScene::removeCube(CubeSprite* cube)
 {
     assert(cube);
+    for (auto iter = _cubes.begin(); iter != _cubes.end(); ) {
+        if (*iter == cube) {
+            _cubes.erase(iter);
+        } else {
+            iter++;
+        }
+    }
+    _sceneLayer->removeChild(cube);
 }
 
 
@@ -473,4 +525,162 @@ void BuildingScene::update(float dt)
         dir.normalize();
         _sceneCamera->setPosition3D(_sceneCamera->getPosition3D() + MOVE_SCALE * dir);
     }
+    if (_front && !_back) {
+        Vec3 dir = qua * Vec3{0.f,0.f,-1.f};
+        dir.y = 0.f;
+        dir.normalize();
+        _sceneCamera->setPosition3D(_sceneCamera->getPosition3D() + MOVE_SCALE * dir);
+    }
+    if (_back && !_front) {
+        Vec3 dir = qua * Vec3{0.f,0.f,1.f};
+        dir.y = 0.f;
+        dir.normalize();
+        _sceneCamera->setPosition3D(_sceneCamera->getPosition3D() + MOVE_SCALE * dir);
+    }
+    if (_rotateUp || _rotateDown) {
+        if (_rotateUp && _rotateDown) {
+            // skip
+        } else if (_rotateUp){
+            _rotateX += ROTATE_SCALE*ROTATE_KEY_STEP;
+        } else {
+            _rotateX -= ROTATE_SCALE*ROTATE_KEY_STEP;
+        }
+        if (_rotateX > UP_DOWN_MAX*0.5f*PI) _rotateX = UP_DOWN_MAX*0.5f*PI;
+        if (_rotateX < -UP_DOWN_MAX*0.5f*PI) _rotateX = -UP_DOWN_MAX*0.5f*PI;
+    }
+    if (_rotateLeft || _rotateRight) {
+        if (_rotateLeft && _rotateRight) {
+            // skip
+        } else if (_rotateLeft){
+            _rotateY += ROTATE_SCALE*ROTATE_KEY_STEP;
+        } else {
+            _rotateY -= ROTATE_SCALE*ROTATE_KEY_STEP;
+        }
+    }
+    calcIntersection();
+}
+
+inline bool intersectionQuad(const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& d, const Vec3& origin, const Vec3& dir, float* distance){
+    float da = 0;
+    float db = 0;
+
+    if (triangle_intersection(a,c,b,origin,dir,&da) || triangle_intersection(a,c,d,origin,dir,&db)) {
+        if (distance) {
+            *distance = std::max(da, db);
+        }
+        return true;
+    }
+    return false;
+}
+
+CubeSprite* BuildingScene::getIntersection(int* face)
+{
+    Vec3 dir = _sceneCamera->getRotationQuat() * Vec3{0.f,0.f,-1.f};
+    Vec3 origin = _sceneCamera->getPosition3D() * (1.f / EditState::CUBE_WIDTH); // 这样就不用转换rawPos了。
+    float distMin = std::numeric_limits<float>::max();
+    CubeSprite* retCube = nullptr;
+    int retFace = 0;
+
+    float tmpdis = 0;
+    for (auto iter = _cubes.begin(); iter != _cubes.end(); iter++) {
+        Vec3 rawPos = (*iter)->getRawPos();
+
+        Vec3 a = rawPos + Vec3{0.5f,0.5f,0.5f};
+        Vec3 b = rawPos + Vec3{0.5f, 0.5f,-0.5f};
+        Vec3 c =rawPos + Vec3{-0.5f, 0.5f, -0.5f};
+        Vec3 d = rawPos + Vec3{-0.5f,0.5f,0.5f};
+        Vec3 e = rawPos + Vec3{0.5f,-0.5f,0.5f};
+        Vec3 f = rawPos + Vec3{0.5f, -0.5f,-0.5f};
+        Vec3 g =rawPos + Vec3{-0.5f, -0.5f, -0.5f};
+        Vec3 h = rawPos + Vec3{-0.5f,-0.5f,0.5f};
+
+        if (intersectionQuad(a,b,c,d,origin,dir,&tmpdis)) {
+            if (tmpdis < distMin) {
+                distMin = tmpdis;
+                retCube = *iter;
+                retFace = FYP;
+            }
+        }
+        if (intersectionQuad(e,f,g,h,origin,dir,&tmpdis)) {
+            if (tmpdis < distMin) {
+                distMin = tmpdis;
+                retCube = *iter;
+                retFace = FYN;
+            }
+        }
+        if (intersectionQuad(a,d,h,e,origin,dir,&tmpdis)) {
+            if (tmpdis < distMin) {
+                distMin = tmpdis;
+                retCube = *iter;
+                retFace = FZP;
+            }
+        }
+        if (intersectionQuad(b,c,g,f,origin,dir,&tmpdis)) {
+            if (tmpdis < distMin) {
+                distMin = tmpdis;
+                retCube = *iter;
+                retFace = FZN;
+            }
+        }
+        if (intersectionQuad(a,e,f,b,origin,dir,&tmpdis)) {
+            if (tmpdis < distMin) {
+                distMin = tmpdis;
+                retCube = *iter;
+                retFace = FXP;
+            }
+        }
+        if (intersectionQuad(c,d,h,g,origin,dir,&tmpdis)) {
+            if (tmpdis < distMin) {
+                distMin = tmpdis;
+                retCube = *iter;
+                retFace = FXN;
+            }
+        }
+    }
+
+    if (face) *face = retFace;
+
+    return retCube;
+}
+
+void BuildingScene::calcIntersection()
+{
+    CubeSprite* cp = getIntersection(&_lastSelectedFace);
+    if (cp ==_lastSelected) return;
+    if (_lastSelected) _lastSelected->unselect();
+    _lastSelected = nullptr;
+    if (cp) {
+        cp->select();
+        _lastSelected = cp;
+        auto r = cp->getRawPos();
+//        CCLOG("Intersection = {%f %f %f} %d", r.x, r.y, r.z, face);
+    }
+}
+
+void BuildingScene::addAnCubeAlignSelectedFace()
+{
+    CCLOG("add cube align selected face");
+    if (_lastSelected == nullptr) return;
+
+    Vec3 pos = _lastSelected->getRawPos();
+    Vec3 toadd = _lastSelectedFace == FXP ? Vec3{1.f,0.f,0.f} :
+    _lastSelectedFace == FXN ? Vec3{-1.f,0.f,0.f} :
+    _lastSelectedFace == FYP ? Vec3{0.f,1.f,0.f} :
+    _lastSelectedFace == FYN ? Vec3{0.f,-1.f,0.f} :
+    _lastSelectedFace == FZP ? Vec3{0.f,0.f,1.f} : Vec3{0.f,0.f,-1.f};
+    auto newCube = CubeSprite::create(pos + toadd, _brushLayer->getSelectedCubeId());
+    addCube(newCube);
+}
+
+void BuildingScene::deleteTheSelectedCube()
+{
+    CCLOG("delete the selected cube");
+    if (_lastSelected == nullptr) return;
+
+    _lastSelected->unselect();
+
+    removeCube(_lastSelected);
+
+    _lastSelected = nullptr;
+
 }

@@ -37,6 +37,13 @@
             "color":[0,0,1,0],
 			"texture":"textures/leopard.png",
 			"shader":["shaders/texture.vsh", "shaders/texture.fsh"]
-		}
+		},
+        {
+        "id":6,
+        "unreal":1,
+        "name":"unreal0",
+        "color":[0,0,1,0],
+        "texture":"textures/unreal0.png"
+        }
 	]
 }

@@ -55,9 +55,9 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     // hacked。这里用color.a == 0来在fsh中判断是否是texture还是color，当texture时，咱们用color.r来传alpha值。
     if (_texture){
         getGLProgramState()->setUniformTexture("u_texture", _texture);
-        color.x = getOpacity() * 1.f / 256.f;
+        color.x = getOpacity() * 1.f / 256.f * (_selected ? 0.5f : 1.f);
     } else {
-        color.w = color.w * (getOpacity() * 1.f / 256.f);
+        color.w = color.w * (getOpacity() * 1.f / 256.f) * (_selected ? 0.5f : 1.f);
     }
     _meshCommand->setDisplayColor(color);
     renderer->addCommand(_meshCommand);

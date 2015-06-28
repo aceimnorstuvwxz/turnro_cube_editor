@@ -38,6 +38,15 @@ public:
     virtual bool init() override;
     CREATE_FUNC(BuildingScene);
 
+    enum FaceType
+    {
+        FXP, // x positive
+        FXN, // x negative
+        FYP,
+        FYN,
+        FZP,
+        FZN
+    };
 private:
     enum UnrealType
     {
@@ -78,6 +87,12 @@ private:
     bool _up = false;
     bool _down = false;
     bool _isFPS = false;
+    bool _front = false;
+    bool _back = false;
+    bool _rotateUp = false;
+    bool _rotateDown = false;
+    bool _rotateLeft = false;
+    bool _rotateRight = false;
     cocos2d::Vec2 _fpsAnchor;
     float _rotateY = 0.f;
     float _rotateX = 0.f;
@@ -85,9 +100,18 @@ private:
 
     const float MOVE_SCALE = 1.f;
     const float UP_DOWN_MAX = 0.99f;
-    const float ROTATE_SCALE = 0.01f;
-    const float SCALL_MOVE_SCALE = 0.1f;
+    const float ROTATE_SCALE = 0.005f;
+    const float SCALL_MOVE_SCALE = 1.f;
+    const float ROTATE_KEY_STEP = 1.f;
     const float PI = 3.1415926f;
+
+    // 找到选择的cube
+    void calcIntersection();
+    CubeSprite* getIntersection(int* face);
+    CubeSprite* _lastSelected = nullptr;
+    int _lastSelectedFace = 0;
+    void addAnCubeAlignSelectedFace();
+    void deleteTheSelectedCube();
 };
 
 #endif /* defined(__cube3d__BuildingScene__) */
