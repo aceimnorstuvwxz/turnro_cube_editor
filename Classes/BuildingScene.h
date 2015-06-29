@@ -65,6 +65,7 @@ private:
     };
     const float _cubeWidth = 10;
 
+    bool _isDirty = false;
     void reloadMetaCubes();
     void loadUnitCubes();
     void saveUnitCubes();

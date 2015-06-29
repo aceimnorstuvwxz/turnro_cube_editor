@@ -8,6 +8,7 @@
     "files":
     [
      "metacubes.json",
+     "amc.cube",
      "shaders/default.fsh",
      "shaders/default.vsh",
      "textures/leopard.png",

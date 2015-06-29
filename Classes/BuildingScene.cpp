@@ -243,6 +243,7 @@ void BuildingScene::saveUnitCubes()
     rjson::Writer<rjson::FileWriteStream> writer(os);
     doc.Accept(writer);
     fclose(fp);
+    _isDirty = false;
 }
 
 void BuildingScene::copyTemplateWorkspace()
@@ -297,7 +298,10 @@ void BuildingScene::initMenuButtons()
     });
 
     // 保存
-    addCommonBtn({0.9f,0.95f}, Msg::s()["save"], [this](){ saveUnitCubes(); });
+    addCommonBtn({0.8f,0.95f}, Msg::s()["save"], [this](){ saveUnitCubes(); });
+
+    // 返回
+    addCommonBtn({0.9f,0.95f}, Msg::s()["back"], [this](){ Director::getInstance()->popScene(); });
 
 }
 
@@ -380,9 +384,9 @@ void BuildingScene::initSceneLayer()
                 undoOrder();
                 break;
 
-            case EventKeyboard::KeyCode::KEY_B:
-            case EventKeyboard::KeyCode::KEY_CAPITAL_B:
-                CCLOG("key b down");
+            case EventKeyboard::KeyCode::KEY_F:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_F:
+                CCLOG("key f down");
                 _mourseMetaCubeSelect = true;
                 break;
 
@@ -457,9 +461,9 @@ void BuildingScene::initSceneLayer()
                 _mouseDeleting = false;
                 break;
 
-            case EventKeyboard::KeyCode::KEY_B:
-            case EventKeyboard::KeyCode::KEY_CAPITAL_B:
-                CCLOG("key b up");
+            case EventKeyboard::KeyCode::KEY_F:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_F:
+                CCLOG("key f up");
                 _mourseMetaCubeSelect = false;
                 break;
 
@@ -582,6 +586,7 @@ void BuildingScene::addCube(CubeSprite* cube)
         this->removeCubeForUndo(rawPos);
     };
     execOrder(order);
+    _isDirty = true;
 }
 
 void BuildingScene::addCubeForUndo(const cocos2d::Vec3& rawPos, const int& metaCubeId)
@@ -591,6 +596,7 @@ void BuildingScene::addCubeForUndo(const cocos2d::Vec3& rawPos, const int& metaC
     cs->setPosition3D(rawPos2Real(cs->getRawPos()));
     cs->setCameraMask(_sceneLayer->getCameraMask());
     _sceneLayer->addChild(cs);
+    _isDirty = true;
 }
 
 void BuildingScene::removeCube(CubeSprite* cube)
@@ -612,6 +618,7 @@ void BuildingScene::removeCube(CubeSprite* cube)
         this->addCubeForUndo(rawPos, id);
     };
     execOrder(order);
+    _isDirty = true;
 }
 
 void BuildingScene::removeCubeForUndo(const cocos2d::Vec3& rawPos)
@@ -624,6 +631,7 @@ void BuildingScene::removeCubeForUndo(const cocos2d::Vec3& rawPos)
             iter++;
         }
     }
+    _isDirty = true;
 }
 
 void BuildingScene::addUnrealWall(UnrealType t, int width)

@@ -95,19 +95,17 @@ void WelcomeScene::onKeyPressed(const EventKeyboard::KeyCode& code)
         }
     }
     _lbInput->setString(_input);
-
 }
 
 void WelcomeScene::onInputFinish()
 {
-    auto path = FileUtils::getInstance()->getWritablePath();
-    CCLOG("%s", path.c_str());
-
     //check
     if (_input.size() <= 0) return;
 
     //go
     EditState::s()->setUnitName(_input);
 
+    _input.clear();
+    _lbInput->setString(_input);
     Director::getInstance()->pushScene(BuildingScene::create());
 }
