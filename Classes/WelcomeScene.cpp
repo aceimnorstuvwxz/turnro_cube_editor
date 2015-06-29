@@ -40,12 +40,13 @@ bool WelcomeScene::init()
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
-    // dev
+#ifdef __TR_DEV__
     auto func = [this](float dt){
         _input = "devunit";
         this->onInputFinish();
     };
     scheduleOnce(func, 0.5f, genKey());
+#endif
 
     return true;
 }

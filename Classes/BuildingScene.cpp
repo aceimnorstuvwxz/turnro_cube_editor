@@ -9,6 +9,7 @@
 #include "../rapidjson/writer.h"
 #include "../rapidjson/stringbuffer.h"
 #include "../rapidjson/filereadstream.h"
+#include "../rapidjson/filewritestream.h"
 
 #include <sys/stat.h> //mkdir
 
@@ -66,6 +67,8 @@ bool BuildingScene::init()
     reloadMetaCubes();
 
     initMenuButtons();
+
+    loadUnitCubes();
 
     scheduleUpdate();
 
@@ -167,6 +170,80 @@ void BuildingScene::reloadMetaCubes()
     _brushLayer->reload();
 }
 
+void BuildingScene::loadUnitCubes()
+{
+
+    FILE* fp = fopen(EditState::s()->getUnitFilePath().c_str(), "r"); // TODO if Windows using "rb"
+
+    if (fp == NULL) {
+        CCLOG("Unit file do not exist, load no unit cubes");
+        return;
+    }
+
+    assert(fp != NULL);
+
+    char readBuffer[65536];
+    rjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+
+    rjson::Document doc;
+    doc.ParseStream(is);
+    fclose(fp);
+
+    // extract unit cubes
+    assert(doc.HasMember("list"));
+    auto& list = doc["list"];
+    for (auto iter = list.Begin(); iter != list.End(); iter++) {
+        assert(iter->HasMember("pos") && iter->HasMember("mid"));
+        auto& posArr = (*iter)["pos"];
+        assert(posArr.Size() == 3);
+        int mid = (*iter)["mid"].GetInt();
+        Vec3 rawPos = {0, 0, 0};
+        int tmpIndex = 0;
+        for (auto jter = posArr.Begin(); jter != posArr.End(); jter++, tmpIndex++) {
+            if (tmpIndex == 0) {
+                rawPos.x = jter->GetInt();
+            } else if(tmpIndex ==1 ){
+                rawPos.y = jter->GetInt();
+            } else {
+                rawPos.z = jter->GetInt();
+            }
+        }
+        addCube(CubeSprite::create(rawPos, mid));
+    }
+}
+
+void BuildingScene::saveUnitCubes()
+{
+    // buildup json data
+    rjson::Document doc;
+    doc.SetObject();
+    rjson::Value list;
+    list.SetArray();
+    for (auto iter = _cubes.begin(); iter != _cubes.end(); iter++) {
+        rjson::Value obj;
+        obj.SetObject();
+//        rjson::Value mid;
+//        mid.SetInt((*iter)->getMetaCubeId());
+        obj.AddMember("mid", (*iter)->getMetaCubeId(), doc.GetAllocator());
+        rjson::Value pos;
+        pos.SetArray();
+        Vec3 rawPos = (*iter)->getRawPos();
+        pos.PushBack((int)rawPos.x, doc.GetAllocator()).PushBack((int)rawPos.y, doc.GetAllocator()).PushBack((int)rawPos.z, doc.GetAllocator());
+        obj.AddMember("pos", pos, doc.GetAllocator());
+        list.PushBack(obj, doc.GetAllocator());
+    }
+    doc.AddMember("list", list, doc.GetAllocator());
+
+    FILE* fp = fopen(EditState::s()->getUnitFilePath().c_str(), "w");
+    assert(fp != NULL);
+
+    char writeBuffer[65536];
+    rjson::FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+    rjson::Writer<rjson::FileWriteStream> writer(os);
+    doc.Accept(writer);
+    fclose(fp);
+}
+
 void BuildingScene::copyTemplateWorkspace()
 {
     auto fileListString = FileUtils::getInstance()->getStringFromFile("MicroCube/filelist.json");
@@ -217,6 +294,9 @@ void BuildingScene::initMenuButtons()
     // 加入中心点
     addCommonBtn({0.3f,0.9f}, Msg::s()["add_center"], [this](){ addCenterAnchor();
     });
+
+    // 保存
+    addCommonBtn({0.9f,0.9f}, Msg::s()["save"], [this](){ saveUnitCubes(); });
 
 }
 
@@ -835,4 +915,3 @@ void BuildingScene::undoOrder()
     order.undo();
     _orderQueue.pop_back();
 }
-

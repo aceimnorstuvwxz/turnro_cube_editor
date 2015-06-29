@@ -66,6 +66,8 @@ private:
     const float _cubeWidth = 10;
 
     void reloadMetaCubes();
+    void loadUnitCubes();
+    void saveUnitCubes();
     void copyTemplateWorkspace();
 
     void initMenuButtons();
@@ -89,6 +91,7 @@ private:
     void removeCubeForUndo(const cocos2d::Vec3& rawPos);
     cocos2d::Vec3 rawPos2Real(cocos2d::Vec3 rawPos);
 
+    // 按钮功能
     void addUnrealWall(UnrealType t, int width);
     void addCenterAnchor();
 

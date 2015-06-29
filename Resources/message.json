@@ -4,5 +4,6 @@
     "welcome_desc":"输入将创建或选择的Unit的名称",
     "unreal_bottom":"Add bottom",
     "unreal_wall":"Add wall",
-    "add_center":"Add center"
+    "add_center":"Add center",
+    "save":"Save"
 }
