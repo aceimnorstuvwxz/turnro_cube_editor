@@ -120,7 +120,7 @@ private:
     bool _mourseMetaCubeSelect = false;
 
 
-    const float MOVE_SCALE = 1.f;
+    const float MOVE_SCALE = 1.5f;
     const float UP_DOWN_MAX = 0.99f;
     const float ROTATE_SCALE = 0.005f;
     const float SCALL_MOVE_SCALE = 1.f;
