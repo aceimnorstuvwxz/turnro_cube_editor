@@ -32,7 +32,8 @@ public:
         assert(McdLayer::init());
 
         _lbUnitFile = Label::createWithTTF(EditState::s()->getExtraUnitFilePath(), uic::font_zh, 14);
-        _lbUnitFile->setPosition(genPos({0.5f, 0.95f}));
+        _lbUnitFile->setPosition(genPos({0.5f, 0.975f}));
+        _lbUnitFile->setTextColor(Color4B::WHITE);
         this->addChild(_lbUnitFile);
 
         schedule(schedule_selector(StateInfoLayer::onUpdateState), 0.33f, kRepeatForever, 0);
@@ -370,7 +371,6 @@ void BuildingScene::initSceneLayer()
             case EventKeyboard::KeyCode::KEY_V:
             case EventKeyboard::KeyCode::KEY_CAPITAL_V:
                 CCLOG("key v down");
-                deleteTheMouseSelectedCube();
                 _mouseDeleting = true;
                 break;
 

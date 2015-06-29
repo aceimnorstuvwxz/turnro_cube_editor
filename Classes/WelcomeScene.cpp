@@ -18,11 +18,26 @@ bool WelcomeScene::init()
     assert(TRBaseScene::init());
 
     // 显示的结构
-    addCommonLabel({.5f,.5f}, Msg::s()["welcome"]);
-    addCommonLabel({.5f, .23f}, Msg::s()["welcome_desc"], 10);
+    auto lbTitle = Label::createWithTTF(Msg::s()["title"], uic::font_zh, 25);
+    lbTitle->setPosition(genPos({0.5,0.5}));
+    lbTitle->setTextColor(Color4B::GRAY);
+    _defaultLayer->addChild(lbTitle);
+
+    auto lbVersion = Label::createWithTTF(Msg::s()["version"], uic::font_zh, 10);
+    lbVersion->setPosition(genPos({0.5,0.075}));
+    lbVersion->setTextColor(Color4B::GRAY);
+    _defaultLayer->addChild(lbVersion);
+
+    addCommonLabel({.5f, .45f}, Msg::s()["input_desc"], 10);
+
     _lbInput = Label::createWithTTF("", uic::font_zh, 10);
-    _lbInput->setPosition(genPos({.5f,.2f}));
+    _lbInput->setPosition(genPos({.5f,.43f}));
     _defaultLayer->addChild(_lbInput);
+
+    auto lbCopy = Label::createWithTTF(Msg::s()["copyright"], uic::font_zh, 10);
+    lbCopy->setPosition(genPos({0.5, 0.05}));
+    lbCopy->setTextColor(Color4B::GRAY);
+    _defaultLayer->addChild(lbCopy);
 
     // 键盘的纹理
     // keyboard

@@ -1,7 +1,10 @@
 {
     "____WARNNNG_____":"注意格式。",
-    "welcome":"欢迎!",
-    "welcome_desc":"输入将创建或选择的Unit的名称",
+    "title":"湍流方块编辑器",
+    "copyright":"©2015 湍流游戏\nwww.turnro.com",
+    "input_desc":"输入将创建或选择的Unit的名称",
+    "version":"v0.0.1",
+    
     "unreal_bottom":"Add bottom",
     "unreal_wall":"Add wall",
     "add_center":"Add center",
