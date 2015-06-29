@@ -2,6 +2,7 @@
     "____WARNNNG_____":"注意格式。",
     "welcome":"欢迎!",
     "welcome_desc":"输入将创建或选择的Unit的名称",
-    "unreal_bottom":"虚拟地面",
-    "unreal_wall":"虚拟墙面"
+    "unreal_bottom":"Add bottom",
+    "unreal_wall":"Add wall",
+    "add_center":"Add center"
 }

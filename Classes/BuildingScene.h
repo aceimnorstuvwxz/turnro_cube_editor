@@ -77,6 +77,7 @@ private:
     cocos2d::Vec3 rawPos2Real(cocos2d::Vec3 rawPos);
 
     void addUnrealWall(UnrealType t, int width);
+    void addCenterAnchor();
 
     // 漫游
     void update(float dt)override;
@@ -97,6 +98,9 @@ private:
     float _rotateY = 0.f;
     float _rotateX = 0.f;
 
+    bool _centerSelect = false;
+    bool _mouseDeleting = false;
+
 
     const float MOVE_SCALE = 1.f;
     const float UP_DOWN_MAX = 0.99f;
@@ -106,17 +110,19 @@ private:
     const float PI = 3.1415926f;
 
     // 找到选择的cube
-    void calcIntersection();
+    void updateCenterSelection();
     CubeSprite* getIntersection(const cocos2d::Vec3& origin, const cocos2d::Vec3& dir, int* face);
     CubeSprite* _lastSelected = nullptr;
     int _lastSelectedFace = 0;
     void addAnCubeAlignSelectedFace();
     void deleteTheSelectedCube();
     void addAndCubeByMouseCursor(const cocos2d::Vec2& cursor);
+    void deleteAnCubeByMouseCursor(const cocos2d::Vec2& cursor);
     void addCubeBySelectInter(const cocos2d::Vec3& alignRawPos, int face);
     CubeSprite* _lastMouseSelected = nullptr;
     void showMouseSelection(const cocos2d::Vec2& cursor);
     CubeSprite* getMouseSelection(const cocos2d::Vec2& cursor, int* face);
+    void deleteTheMouseSelectedCube();
 };
 
 #endif /* defined(__cube3d__BuildingScene__) */

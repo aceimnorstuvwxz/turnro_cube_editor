@@ -207,8 +207,17 @@ void BuildingScene::copyTemplateWorkspace()
 
 void BuildingScene::initMenuButtons()
 {
+    // 加地板
     addCommonBtn({0.1f,0.9f}, Msg::s()["unreal_bottom"], [this](){ addUnrealWall(UY, 30);
     });
+
+    // 加墙壁
+    addCommonBtn({0.2f,0.9f}, Msg::s()["unreal_wall"], [this](){ addUnrealWall(UZ, 30); });
+
+    // 加入中心点
+    addCommonBtn({0.3f,0.9f}, Msg::s()["add_center"], [this](){ addCenterAnchor();
+    });
+
 }
 
 void BuildingScene::initSceneLayer()
@@ -278,6 +287,13 @@ void BuildingScene::initSceneLayer()
                 deleteTheSelectedCube();
                 break;
 
+            case EventKeyboard::KeyCode::KEY_V:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_V:
+                CCLOG("key v down");
+//                deleteTheMouseSelectedCube();
+                _mouseDeleting = true;
+                break;
+
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
                 CCLOG("key arrow up");
                 _rotateUp = true;
@@ -343,6 +359,12 @@ void BuildingScene::initSceneLayer()
             _up = false;
             break;
 
+            case EventKeyboard::KeyCode::KEY_V:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_V:
+                CCLOG("key v up");
+                _mouseDeleting = false;
+                break;
+
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
                 CCLOG("key arrow up");
                 _rotateUp = false;
@@ -406,7 +428,11 @@ void BuildingScene::initSceneLayer()
         EventMouse* e = (EventMouse*)event;
         switch(e->getMouseButton()){
             case MOUSE_BUTTON_LEFT:
-                addAndCubeByMouseCursor(e->getLocationInView());
+                if (_mouseDeleting ) {
+                    deleteAnCubeByMouseCursor(e->getLocationInView());
+                } else {
+                    addAndCubeByMouseCursor(e->getLocationInView());
+                }
                 break;
 
             case MOUSE_BUTTON_RIGHT:
@@ -489,6 +515,18 @@ void BuildingScene::addUnrealWall(UnrealType t, int width)
 //    addCube(CubeSprite::create({0,0,0}, 0));
 }
 
+void BuildingScene::addCenterAnchor()
+{
+    // check
+    for (auto iter = _cubes.begin(); iter != _cubes.end(); iter++) {
+        if ( (*iter)->getRawPos() == Vec3{0,0,0} ) {
+            return;
+        }
+    }
+
+    addCube(CubeSprite::create({0,0,0}, _brushLayer->getSelectedCubeId()));
+}
+
 void BuildingScene::update(float dt)
 {
     Quaternion qua2 = {Vec3(1.f,0.f,0.f), _rotateX};
@@ -498,12 +536,12 @@ void BuildingScene::update(float dt)
 
     qua.normalize();
     if (_up && !_down) {
-        Vec3 dir = qua * Vec3{0.f,1.f,0.f};
+        Vec3 dir = Vec3{0.f,1.f,0.f};
         dir.normalize();
         _sceneCamera->setPosition3D(_sceneCamera->getPosition3D() + MOVE_SCALE * dir);
     }
     if (_down && !_up) {
-        Vec3 dir = qua * Vec3{0.f,-1.f,0.f};
+        Vec3 dir = Vec3{0.f,-1.f,0.f};
         dir.normalize();
         _sceneCamera->setPosition3D(_sceneCamera->getPosition3D() + MOVE_SCALE * dir);
     }
@@ -559,7 +597,8 @@ void BuildingScene::update(float dt)
             _rotateY -= ROTATE_SCALE*ROTATE_KEY_STEP;
         }
     }
-    calcIntersection();
+    // 基于准星的加入与删除，通过_centerSelect来开启或关闭。
+    if (_centerSelect) updateCenterSelection();
 }
 
 inline bool intersectionQuad(const Vec3& a, const Vec3& b, const Vec3& c, const Vec3& d, const Vec3& origin, const Vec3& dir, float* distance){
@@ -646,7 +685,7 @@ CubeSprite* BuildingScene::getIntersection(const Vec3& origin2, const Vec3& dir,
     return retCube;
 }
 
-void BuildingScene::calcIntersection()
+void BuildingScene::updateCenterSelection()
 {
     Vec3 dir = _sceneCamera->getRotationQuat() * Vec3{0.f,0.f,-1.f};
 
@@ -685,13 +724,18 @@ void BuildingScene::deleteTheSelectedCube()
 {
     CCLOG("delete the selected cube");
     if (_lastSelected == nullptr) return;
-
     _lastSelected->unselect();
-
     removeCube(_lastSelected);
-
     _lastSelected = nullptr;
+}
 
+void BuildingScene::deleteTheMouseSelectedCube()
+{
+    CCLOG("delete the mouse selected cube");
+    if (_lastMouseSelected == nullptr) return;
+    _lastMouseSelected->unselect();
+    removeCube(_lastMouseSelected);
+    _lastMouseSelected = nullptr;
 }
 
 void BuildingScene::addAndCubeByMouseCursor(const cocos2d::Vec2& cursor)
@@ -703,6 +747,17 @@ void BuildingScene::addAndCubeByMouseCursor(const cocos2d::Vec2& cursor)
         addCubeBySelectInter(cp->getRawPos(), face);
     }
 }
+
+void BuildingScene::deleteAnCubeByMouseCursor(const cocos2d::Vec2& cursor)
+{
+    CCLOG("delete cube by mouse cursor");
+    int face;
+    CubeSprite* cp = getMouseSelection(cursor, &face);
+    if (cp) {
+        removeCube(cp);
+    }
+}
+
 
 void BuildingScene::showMouseSelection(const cocos2d::Vec2& cursor)
 {
