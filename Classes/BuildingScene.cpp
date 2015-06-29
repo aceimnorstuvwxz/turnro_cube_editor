@@ -532,7 +532,7 @@ void BuildingScene::initSceneLayer()
                     size.height + e->getLocationInView().y < 0.9f * size.height) {
                     if (_mouseDeleting ) {
                         deleteAnCubeByMouseCursor(e->getLocationInView());
-                    } if (_mourseMetaCubeSelect) {
+                    }else if (_mourseMetaCubeSelect) {
                         selectMetaCubeByCursor(e->getLocationInView());
                     }
                     else {
