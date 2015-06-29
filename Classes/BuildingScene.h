@@ -32,6 +32,17 @@
 //    }
 //};
 
+class PrimitiveOrder
+{
+public:
+    PrimitiveOrder(){}
+//    PrimitiveOrder(const std::function<void()>& funcExec, const std::function<void()>& funcUndo):funcExec(funcExec), funcUndo(funcUndo){}
+//    void exec() { if (funcExec) funcExec(); }
+    void undo() { if (funcUndo) funcUndo(); }
+//    std::function<void()> funcExec = nullptr;
+    std::function<void()> funcUndo = nullptr;
+};
+
 class BuildingScene: public TRBaseScene
 {
 public:
@@ -72,8 +83,10 @@ private:
     std::vector<CubeSprite*> _cubes;
     // 增加一个Cube到Scene中，会加入到_sceneLayer和_cubeMap。
     void addCube(CubeSprite* cube);
+    void addCubeForUndo(const cocos2d::Vec3& rawPos, const int& metaCubeId);
     // 从_sceneLayer和_cubeMap中去掉一个Cube。
     void removeCube(CubeSprite* cube);
+    void removeCubeForUndo(const cocos2d::Vec3& rawPos);
     cocos2d::Vec3 rawPos2Real(cocos2d::Vec3 rawPos);
 
     void addUnrealWall(UnrealType t, int width);
@@ -123,6 +136,13 @@ private:
     void showMouseSelection(const cocos2d::Vec2& cursor);
     CubeSprite* getMouseSelection(const cocos2d::Vec2& cursor, int* face);
     void deleteTheMouseSelectedCube();
+
+    // 命令链
+    // Fixme:我们在addCube/removeCube层面进行命令包装，但这导致批量的增加和减少无法批量的撤销。
+    const int MAX_SAVE_ORDER = 1000;
+    std::deque<PrimitiveOrder> _orderQueue;
+    void execOrder(PrimitiveOrder& order);
+    void undoOrder();
 };
 
 #endif /* defined(__cube3d__BuildingScene__) */

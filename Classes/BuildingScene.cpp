@@ -294,6 +294,12 @@ void BuildingScene::initSceneLayer()
                 _mouseDeleting = true;
                 break;
 
+            case EventKeyboard::KeyCode::KEY_Z:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_Z:
+                CCLOG("key z down");
+                undoOrder();
+                break;
+
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
                 CCLOG("key arrow up");
                 _rotateUp = true;
@@ -469,15 +475,26 @@ cocos2d::Vec3 BuildingScene::rawPos2Real(cocos2d::Vec3 raw)
 void BuildingScene::addCube(CubeSprite* cube)
 {
     assert(cube);
-
-    // Add to HashTable
-//    _cubeMap[cube->getRawPos()] = cube;
-    _cubes.push_back(cube); //crash
-
-    // Add to Scene
+    _cubes.push_back(cube);
     cube->setPosition3D(rawPos2Real(cube->getRawPos()));
     cube->setCameraMask(_sceneLayer->getCameraMask());
     _sceneLayer->addChild(cube);
+
+    PrimitiveOrder order;
+    Vec3 rawPos = cube->getRawPos();
+    order.funcUndo = [this, rawPos](){
+        this->removeCubeForUndo(rawPos);
+    };
+    execOrder(order);
+}
+
+void BuildingScene::addCubeForUndo(const cocos2d::Vec3& rawPos, const int& metaCubeId)
+{
+    CubeSprite* cs = CubeSprite::create(rawPos, metaCubeId);
+    _cubes.push_back(cs);
+    cs->setPosition3D(rawPos2Real(cs->getRawPos()));
+    cs->setCameraMask(_sceneLayer->getCameraMask());
+    _sceneLayer->addChild(cs);
 }
 
 void BuildingScene::removeCube(CubeSprite* cube)
@@ -491,8 +508,27 @@ void BuildingScene::removeCube(CubeSprite* cube)
         }
     }
     _sceneLayer->removeChild(cube);
+
+    PrimitiveOrder order;
+    Vec3 rawPos = cube->getRawPos();
+    int id = cube->getMetaCubeId();
+    order.funcUndo = [this, rawPos, id](){
+        this->addCubeForUndo(rawPos, id);
+    };
+    execOrder(order);
 }
 
+void BuildingScene::removeCubeForUndo(const cocos2d::Vec3& rawPos)
+{
+    for (auto iter = _cubes.begin(); iter != _cubes.end(); ) {
+        if ((*iter)->getRawPos() == rawPos ) {
+            _sceneLayer->removeChild(*iter);
+            iter = _cubes.erase(iter);
+        } else {
+            iter++;
+        }
+    }
+}
 
 void BuildingScene::addUnrealWall(UnrealType t, int width)
 {
@@ -782,4 +818,21 @@ CubeSprite* BuildingScene::getMouseSelection(const cocos2d::Vec2& cursor, int* f
     return cp;
 }
 
+
+void BuildingScene::execOrder(PrimitiveOrder& order)
+{
+//    order.exec();
+    _orderQueue.push_back(order);
+    if (_orderQueue.size() >= MAX_SAVE_ORDER) {
+        _orderQueue.pop_front();
+    }
+}
+
+void BuildingScene::undoOrder()
+{
+    if (_orderQueue.empty()) return;
+    auto order = _orderQueue.back();
+    order.undo();
+    _orderQueue.pop_back();
+}
 
