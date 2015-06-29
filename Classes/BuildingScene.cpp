@@ -426,12 +426,16 @@ void BuildingScene::initSceneLayer()
     };
     _mouseListener->onMouseDown = [&](Event *event){
         EventMouse* e = (EventMouse*)event;
+
+        auto size = Director::getInstance()->getVisibleSize();
         switch(e->getMouseButton()){
             case MOUSE_BUTTON_LEFT:
-                if (_mouseDeleting ) {
-                    deleteAnCubeByMouseCursor(e->getLocationInView());
-                } else {
-                    addAndCubeByMouseCursor(e->getLocationInView());
+                if (size.height + e->getLocationInView().y > 0.1f * size.height ) {
+                    if (_mouseDeleting ) {
+                        deleteAnCubeByMouseCursor(e->getLocationInView());
+                    } else {
+                        addAndCubeByMouseCursor(e->getLocationInView());
+                    }
                 }
                 break;
 
