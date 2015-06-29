@@ -79,7 +79,19 @@ void CubeSprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transfor
     _edgePrimitiveCommand->init(_globalZOrder, 0, _edgeGlProgramState, _blendFunc, _edgePrimitive, transform, flags);
 
     _edgePrimitiveCommand->setTransparent(true);
-    renderer->addCommand(_edgePrimitiveCommand);
 
+    // 这个primitiveCommand里面没有开启depth，导致透视。
+//    renderer->addCommand(_edgePrimitiveCommand);
+    CC_SAFE_DELETE(_edgeCustomCommand);
+    _edgeCustomCommand = new CustomCommand();
+    _edgeCustomCommand->init(_globalZOrder, transform, flags);
+    _edgeCustomCommand->func = [this](){
+        // 实际上调用edgePrimitiveCommand，而此处开启depth。
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(true);
+        _edgePrimitiveCommand->execute();
+    };
+
+    renderer->addCommand(_edgeCustomCommand);
     Node::draw(renderer, transform, flags);
 }

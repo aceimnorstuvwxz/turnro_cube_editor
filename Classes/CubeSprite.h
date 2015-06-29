@@ -27,6 +27,7 @@ protected:
     cocos2d::Mesh* _renderMesh = nullptr;
     cocos2d::MeshCommand* _meshCommand = nullptr;
     cocos2d::PrimitiveCommand* _edgePrimitiveCommand = nullptr;
+    cocos2d::CustomCommand* _edgeCustomCommand = nullptr;
     cocos2d::BlendFunc _blendFunc;
     cocos2d::Texture2D* _texture;
     cocos2d::GLProgramState* _edgeGlProgramState = nullptr;
