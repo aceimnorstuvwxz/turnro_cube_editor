@@ -35,7 +35,7 @@ bool BrushLayer::init()
             auto dis = mousePos - spos;
             if (dis.length() < clickScope) {
                 CCLOG("click cube %d", sp->getMetaCubeId());
-                setNewSelectedCube(iter->second->getMetaCubeId());
+                setSelectedCubeId(iter->second->getMetaCubeId());
             }
         }
     };
@@ -85,10 +85,10 @@ void BrushLayer::reload()
         _cubeMap[iter->second.id] = sp;
     }
     // 0是必有的metacube
-    setNewSelectedCube(0);
+    setSelectedCubeId(0);
 }
 
-void BrushLayer::setNewSelectedCube(int metaCubeId)
+void BrushLayer::setSelectedCubeId(int metaCubeId)
 {
     CubeSprite* lastSelected = _cubeMap[_selectedMetaCubeId];
     lastSelected->stopAllActions();

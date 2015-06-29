@@ -4,34 +4,93 @@
 	[
 		{
 			"id":0,
-			"name":"FirstMetaCube",
-			"comment":"light blue virtual meta cube",
+			"name":"virtual",
 			"unreal":1,
-			"color":[0.0,0.0,1.0,0.5]
+			"color":[0.2,0.2,0.2,1.0]
 		},
 		{
 			"id":1,
-			"name":"grayCube",
+			"name":"white",
 			"comment":"a gray cube",
-			"color":[0.5,0.5,0.5,1.0]
+			"color":[1.0,1.0,1.0,1.0]
 		},
 		{
 			"id":2,
-			"name":"HotRed",
-			"color":[1,0,0,1]
+			"name":"silver",
+			"color":[0.75,0.75,0.75,1.0]
 		},
 		{
 			"id":3,
-			"name":"HotGreen",
-			"color":[0,1,0,1]
+			"name":"gray",
+			"color":[0.5,0.5,0.5,1.0]
 		},
 		{
 			"id":4,
-			"name":"HotBlue",
-			"color":[0,0,1,1]
+			"name":"black",
+			"color":[0,0,0,1]
+		},
+        {
+            "id":5,
+            "name":"Red",
+            "color":[1,0,0,1]
+        },
+        {
+            "id":6,
+            "name":"Yellow",
+            "color":[1,1,0,1]
+        },
+		{
+			"id":7,
+			"name":"Lime",
+			"color":[0,1,0,1]
 		},
 		{
-			"id":5,
+			"id":8,
+			"name":"Aqua",
+			"color":[0,1,1,1]
+		},
+        {
+            "id":9,
+            "name":"Blue",
+            "color":[0,0,1,1]
+        },
+        {
+            "id":10,
+            "name":"Fuchsia",
+            "color":[1,0,1,1]
+        },
+		{
+			"id":11,
+			"name":"Maroon",
+			"color":[0.5,0,0,1]
+		},
+		{
+			"id":12,
+			"name":"Olive",
+			"color":[0.5,0.5,0,1]
+		},
+        {
+            "id":13,
+            "name":"Green",
+            "color":[0,0.5,0,1]
+        },
+        {
+            "id":14,
+            "name":"Teal",
+            "color":[0,0.5,0.5,1]
+        },
+		{
+			"id":15,
+			"name":"Navy",
+			"color":[0,0,0.5,1.0]
+		},
+		{
+			"id":16,
+			"name":"Purple",
+			"color":[0.5,0,0.5,1]
+		},
+		{
+			"id":100,
 			"name":"SexyLeopard",
 			"comment":"豹纹方格，使用了纹理贴图和定制的shader，纹理坐标是简单的按方格放，方格的6个面不会有区分",
             "color":[0,0,1,0],
@@ -39,7 +98,7 @@
 			"shader":["shaders/texture.vsh", "shaders/texture.fsh"]
 		},
         {
-        "id":6,
+        "id":101,
         "unreal":1,
         "name":"unreal0",
         "color":[0,0,1,0],

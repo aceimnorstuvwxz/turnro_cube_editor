@@ -285,18 +285,18 @@ void BuildingScene::copyTemplateWorkspace()
 void BuildingScene::initMenuButtons()
 {
     // 加地板
-    addCommonBtn({0.1f,0.9f}, Msg::s()["unreal_bottom"], [this](){ addUnrealWall(UY, 30);
+    addCommonBtn({0.1f,0.95f}, Msg::s()["unreal_bottom"], [this](){ addUnrealWall(UY, 30);
     });
 
     // 加墙壁
-    addCommonBtn({0.2f,0.9f}, Msg::s()["unreal_wall"], [this](){ addUnrealWall(UZ, 30); });
+    addCommonBtn({0.2f,0.95f}, Msg::s()["unreal_wall"], [this](){ addUnrealWall(UZ, 30); });
 
     // 加入中心点
-    addCommonBtn({0.3f,0.9f}, Msg::s()["add_center"], [this](){ addCenterAnchor();
+    addCommonBtn({0.3f,0.95f}, Msg::s()["add_center"], [this](){ addCenterAnchor();
     });
 
     // 保存
-    addCommonBtn({0.9f,0.9f}, Msg::s()["save"], [this](){ saveUnitCubes(); });
+    addCommonBtn({0.9f,0.95f}, Msg::s()["save"], [this](){ saveUnitCubes(); });
 
 }
 
@@ -370,7 +370,7 @@ void BuildingScene::initSceneLayer()
             case EventKeyboard::KeyCode::KEY_V:
             case EventKeyboard::KeyCode::KEY_CAPITAL_V:
                 CCLOG("key v down");
-//                deleteTheMouseSelectedCube();
+                deleteTheMouseSelectedCube();
                 _mouseDeleting = true;
                 break;
 
@@ -378,6 +378,12 @@ void BuildingScene::initSceneLayer()
             case EventKeyboard::KeyCode::KEY_CAPITAL_Z:
                 CCLOG("key z down");
                 undoOrder();
+                break;
+
+            case EventKeyboard::KeyCode::KEY_B:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_B:
+                CCLOG("key b down");
+                _mourseMetaCubeSelect = true;
                 break;
 
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
@@ -451,6 +457,12 @@ void BuildingScene::initSceneLayer()
                 _mouseDeleting = false;
                 break;
 
+            case EventKeyboard::KeyCode::KEY_B:
+            case EventKeyboard::KeyCode::KEY_CAPITAL_B:
+                CCLOG("key b up");
+                _mourseMetaCubeSelect = false;
+                break;
+
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
                 CCLOG("key arrow up");
                 _rotateUp = false;
@@ -516,10 +528,14 @@ void BuildingScene::initSceneLayer()
         auto size = Director::getInstance()->getVisibleSize();
         switch(e->getMouseButton()){
             case MOUSE_BUTTON_LEFT:
-                if (size.height + e->getLocationInView().y > 0.1f * size.height ) {
+                if (size.height + e->getLocationInView().y > 0.1f * size.height &&
+                    size.height + e->getLocationInView().y < 0.9f * size.height) {
                     if (_mouseDeleting ) {
                         deleteAnCubeByMouseCursor(e->getLocationInView());
-                    } else {
+                    } if (_mourseMetaCubeSelect) {
+                        selectMetaCubeByCursor(e->getLocationInView());
+                    }
+                    else {
                         addAndCubeByMouseCursor(e->getLocationInView());
                     }
                 }
@@ -856,6 +872,16 @@ void BuildingScene::deleteTheMouseSelectedCube()
     _lastMouseSelected->unselect();
     removeCube(_lastMouseSelected);
     _lastMouseSelected = nullptr;
+}
+
+void BuildingScene::selectMetaCubeByCursor(const cocos2d::Vec2& cursor)
+{
+    CCLOG("select metacube by cursor");
+    int face;
+    auto cp = getMouseSelection(cursor, &face);
+    if (cp) {
+        _brushLayer->setSelectedCubeId(cp->getMetaCubeId());
+    }
 }
 
 void BuildingScene::addAndCubeByMouseCursor(const cocos2d::Vec2& cursor)

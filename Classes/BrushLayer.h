@@ -18,13 +18,13 @@ public:
 
     void reload();
     int getSelectedCubeId(){return _selectedMetaCubeId;}
+    void setSelectedCubeId(int metaCubeId);
 
 private:
 
     std::unordered_map<int, CubeSprite*> _cubeMap;
 //    CubeSprite* _selectedCube = nullptr;
     int _selectedMetaCubeId = 0;
-    void setNewSelectedCube(int metaCubeId);
     cocos2d::Camera* _camera;
 //    bool _isCubesVisible = false;
 //    void hideOrShowAllMetaCubes();

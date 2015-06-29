@@ -116,6 +116,7 @@ private:
 
     bool _centerSelect = false;
     bool _mouseDeleting = false;
+    bool _mourseMetaCubeSelect = false;
 
 
     const float MOVE_SCALE = 1.f;
@@ -139,6 +140,7 @@ private:
     void showMouseSelection(const cocos2d::Vec2& cursor);
     CubeSprite* getMouseSelection(const cocos2d::Vec2& cursor, int* face);
     void deleteTheMouseSelectedCube();
+    void selectMetaCubeByCursor(const cocos2d::Vec2& cursor);
 
     // 命令链
     // Fixme:我们在addCube/removeCube层面进行命令包装，但这导致批量的增加和减少无法批量的撤销。
