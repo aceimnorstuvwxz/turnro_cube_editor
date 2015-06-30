@@ -74,6 +74,8 @@
 		B506159F1B26D24100FBAD9F /* 3d in Resources */ = {isa = PBXBuildFile; fileRef = B506159D1B26D24100FBAD9F /* 3d */; };
 		B50615A41B27504500FBAD9F /* cubedef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50615A21B27504500FBAD9F /* cubedef.cpp */; };
 		B50615A51B27504500FBAD9F /* cubedef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B50615A21B27504500FBAD9F /* cubedef.cpp */; };
+		B5BB0D921B4318790045CEE9 /* TurnroCubeEditor in Resources */ = {isa = PBXBuildFile; fileRef = B5BB0D911B4318790045CEE9 /* TurnroCubeEditor */; };
+		B5BB0D931B4318790045CEE9 /* TurnroCubeEditor in Resources */ = {isa = PBXBuildFile; fileRef = B5BB0D911B4318790045CEE9 /* TurnroCubeEditor */; };
 		B5C602E71B3B32500076A820 /* format.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602E01B3B32500076A820 /* format.cpp */; };
 		B5C602E81B3B32500076A820 /* format.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602E01B3B32500076A820 /* format.cpp */; };
 		B5C602E91B3B32500076A820 /* Msg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602E21B3B32500076A820 /* Msg.cpp */; };
@@ -90,8 +92,6 @@
 		B5C602FB1B3B39D30076A820 /* EditState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602F81B3B39D30076A820 /* EditState.cpp */; };
 		B5C602FE1B3C421B0076A820 /* BuildingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */; };
 		B5C602FF1B3C421B0076A820 /* BuildingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */; };
-		B5C603021B3C62070076A820 /* MicroCube in Resources */ = {isa = PBXBuildFile; fileRef = B5C603011B3C62070076A820 /* MicroCube */; };
-		B5C603031B3C62070076A820 /* MicroCube in Resources */ = {isa = PBXBuildFile; fileRef = B5C603011B3C62070076A820 /* MicroCube */; };
 		B5C603071B3D612E0076A820 /* BrushLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603051B3D612E0076A820 /* BrushLayer.cpp */; };
 		B5C603081B3D612E0076A820 /* BrushLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603051B3D612E0076A820 /* BrushLayer.cpp */; };
 		B5C6030B1B3D94F90076A820 /* MetaCube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5C603091B3D94F90076A820 /* MetaCube.cpp */; };
@@ -202,6 +202,7 @@
 		B506159D1B26D24100FBAD9F /* 3d */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 3d; sourceTree = "<group>"; };
 		B50615A21B27504500FBAD9F /* cubedef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cubedef.cpp; sourceTree = "<group>"; };
 		B50615A31B27504500FBAD9F /* cubedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cubedef.h; sourceTree = "<group>"; };
+		B5BB0D911B4318790045CEE9 /* TurnroCubeEditor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TurnroCubeEditor; sourceTree = "<group>"; };
 		B5C602E01B3B32500076A820 /* format.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = format.cpp; sourceTree = "<group>"; };
 		B5C602E11B3B32500076A820 /* format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = format.h; sourceTree = "<group>"; };
 		B5C602E21B3B32500076A820 /* Msg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Msg.cpp; sourceTree = "<group>"; };
@@ -217,7 +218,6 @@
 		B5C602F91B3B39D30076A820 /* EditState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditState.h; sourceTree = "<group>"; };
 		B5C602FC1B3C421B0076A820 /* BuildingScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BuildingScene.cpp; sourceTree = "<group>"; };
 		B5C602FD1B3C421B0076A820 /* BuildingScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuildingScene.h; sourceTree = "<group>"; };
-		B5C603011B3C62070076A820 /* MicroCube */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MicroCube; sourceTree = "<group>"; };
 		B5C603051B3D612E0076A820 /* BrushLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BrushLayer.cpp; sourceTree = "<group>"; };
 		B5C603061B3D612E0076A820 /* BrushLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrushLayer.h; sourceTree = "<group>"; };
 		B5C603091B3D94F90076A820 /* MetaCube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MetaCube.cpp; sourceTree = "<group>"; };
@@ -346,9 +346,9 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B5BB0D911B4318790045CEE9 /* TurnroCubeEditor */,
 				B5C602ED1B3B32780076A820 /* characters.json */,
 				B5C602EE1B3B32780076A820 /* message.json */,
-				B5C603011B3C62070076A820 /* MicroCube */,
 				B506159D1B26D24100FBAD9F /* 3d */,
 				B50615921B26C90D00FBAD9F /* images */,
 				B506158F1B26C7E400FBAD9F /* sound */,
@@ -577,13 +577,13 @@
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				B50615931B26C90D00FBAD9F /* images in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
-				B5C603021B3C62070076A820 /* MicroCube in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				B5C602EF1B3B32780076A820 /* characters.json in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
+				B5BB0D921B4318790045CEE9 /* TurnroCubeEditor in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				3EACC98F19EE6D4300EB3C5E /* res in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
@@ -598,7 +598,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5C603031B3C62070076A820 /* MicroCube in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				B5C602F21B3B32780076A820 /* message.json in Resources */,
 				B5C602F01B3B32780076A820 /* characters.json in Resources */,
@@ -606,6 +605,7 @@
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 				B506159F1B26D24100FBAD9F /* 3d in Resources */,
 				B50615941B26C90D00FBAD9F /* images in Resources */,
+				B5BB0D931B4318790045CEE9 /* TurnroCubeEditor in Resources */,
 				B50615911B26C7E400FBAD9F /* sound in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

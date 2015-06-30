@@ -11,7 +11,7 @@ const float EditState::CUBE_WIDTH = 10.f;
 
 std::string EditState::getBasePath() const
 {
-    return FileUtils::getInstance()->getWritablePath() + "MicroCube"+ "/";
+    return FileUtils::getInstance()->getWritablePath() + "TurnroCubeEditor"+ "/";
 }
 
 std::string EditState::getCubeMetaFilePath() const
