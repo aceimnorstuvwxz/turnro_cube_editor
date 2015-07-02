@@ -61,9 +61,11 @@ bool BrushLayer::init()
 }
 
 
-static const float SCALE = 0.1f;
-static const float PY = -15*7;
-static const float SCP_X = 20;
+static const float SCALE = 0.07f;
+static const float PY = -20*7;
+static const float SCP_X = 15;
+static const float SCP_Y = 15;
+static const int N_LINE_MAX = 32;
 void BrushLayer::reload()
 {
     // clear
@@ -78,7 +80,7 @@ void BrushLayer::reload()
     int tmpIndex = 0;
     for (auto iter = metaMap->begin(); iter != metaMap->end(); iter++, tmpIndex++) {
         auto sp = CubeSprite::create({0,0,0}, iter->second.id);
-        sp->setPosition3D(SCALE * Vec3{0.f - metaMap->size()/2 * SCP_X + tmpIndex * SCP_X, PY, 0});
+        sp->setPosition3D(SCALE * Vec3{0.f - N_LINE_MAX/2 * SCP_X + (tmpIndex%N_LINE_MAX) * SCP_X, PY - SCP_Y*(tmpIndex/N_LINE_MAX), 0});
         sp->setCameraMask(this->getCameraMask());
         sp->setScale(SCALE);
         this->addChild(sp);
