@@ -102,17 +102,18 @@ void BuildingScene::reloadMetaCubes()
 
     // extract metacubes
     // defaults
-    assert(doc.HasMember("default_shader"));
-    auto& defaultShader = doc["default_shader"];
-    assert(defaultShader.Size() == 2);
-    int shaderIndex = 0;
-    for (auto iter = defaultShader.Begin(); iter != defaultShader.End(); iter++, shaderIndex++) {
-        if (shaderIndex == 0) {
-            EditState::s()->setDefaultVertexShader(iter->GetString());
-        } else {
-            EditState::s()->setDefaultFragmentShader(iter->GetString());
-        }
-    }
+    // No more default_shaders, not more shaders, no more texture! since v0.1.0
+//    assert(doc.HasMember("default_shader"));
+//    auto& defaultShader = doc["default_shader"];
+//    assert(defaultShader.Size() == 2);
+//    int shaderIndex = 0;
+//    for (auto iter = defaultShader.Begin(); iter != defaultShader.End(); iter++, shaderIndex++) {
+//        if (shaderIndex == 0) {
+//            EditState::s()->setDefaultVertexShader(iter->GetString());
+//        } else {
+//            EditState::s()->setDefaultFragmentShader(iter->GetString());
+//        }
+//    }
     assert(doc.HasMember("list"));
     auto& list = doc["list"];
     auto getStr = [](const rjson::Value& obj, const char* key) {
@@ -248,7 +249,7 @@ void BuildingScene::saveUnitCubes()
 
 void BuildingScene::copyTemplateWorkspace()
 {
-    auto fileListString = FileUtils::getInstance()->getStringFromFile("MicroCube/filelist.json");
+    auto fileListString = FileUtils::getInstance()->getStringFromFile("TurnroCubeEditor/filelist.json");
     CCLOG("%s", fileListString.c_str());
     rjson::Document doc;
     doc.Parse(fileListString.c_str());
@@ -273,7 +274,7 @@ void BuildingScene::copyTemplateWorkspace()
         mkdir(dst.c_str(), 0777);
     }
     for (int i = 0; i < files.size(); i++) {
-        auto data = FileUtils::getInstance()->getDataFromFile("MicroCube/" + files[i]);
+        auto data = FileUtils::getInstance()->getDataFromFile("TurnroCubeEditor/" + files[i]);
         std::string dst = EditState::s()->getBasePath()+files[i];
         CCLOG("%s", dst.c_str());
         FILE* fp = fopen((EditState::s()->getBasePath()+files[i]).c_str(), "w");

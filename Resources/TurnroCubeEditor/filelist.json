@@ -2,16 +2,13 @@
     "comment":"代码根据此文件列表来拷贝模板文件到用户的workspace",
     "directories":
     [
-     "shaders",
-     "textures"
     ],
     "files":
     [
      "metacubes.json",
      "amc.cube",
-     "shaders/default.fsh",
-     "shaders/default.vsh",
-     "textures/leopard.png",
-     "textures/unreal0.png"
+     "cannon.cube",
+     "tank.cube",
+     "simple.cube"
     ]
 }

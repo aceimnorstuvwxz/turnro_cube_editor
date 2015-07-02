@@ -1,5 +1,4 @@
 {
-	"default_shader":["shaders/default.vsh", "shaders/default.fsh"],
 	"list":
 	[
 		{
@@ -88,21 +87,6 @@
 			"id":16,
 			"name":"Purple",
 			"color":[0.5,0,0.5,1]
-		},
-		{
-			"id":100,
-			"name":"SexyLeopard",
-			"comment":"豹纹方格，使用了纹理贴图和定制的shader，纹理坐标是简单的按方格放，方格的6个面不会有区分",
-            "color":[0,0,1,0],
-			"texture":"textures/leopard.png",
-			"shader":["shaders/texture.vsh", "shaders/texture.fsh"]
-		},
-        {
-        "id":101,
-        "unreal":1,
-        "name":"unreal0",
-        "color":[0,0,1,0],
-        "texture":"textures/unreal0.png"
-        }
+		}
 	]
 }
